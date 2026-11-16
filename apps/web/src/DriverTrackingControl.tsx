@@ -15,7 +15,7 @@ export default function DriverTrackingControl({assignmentId}:{assignmentId:strin
    if(Date.now()-lastSentRef.current<12000)return;
    lastSentRef.current=Date.now();
    if(!supabase)return;
-   const {error:e}=await supabase.rpc("record_driver_location",{p_session_id:sessionId,p_latitude:pos.coords.latitude,p_longitude:pos.coords.longitude,p_accuracy_m:pos.coords.accuracy,p_speed_mps:pos.coords.speed,p_heading_deg:pos.coords.heading,p_captured_at:new Date(pos.timestamp).toISOString()});
+   const {error:e}=await supabase.rpc("record_driver_location",{p_session_id:sessionId,p_latitude:pos.coords.latitude,p_longitude:pos.coords.longitude,p_accuracy_m:pos.coords.accuracy,p_speed_mps:pos.coords.speed??undefined,p_heading_deg:pos.coords.heading??undefined,p_captured_at:new Date(pos.timestamp).toISOString()});
    if(e)setError(e.message.includes("10 seconds")?"GPS is updating…":e.message);else{setError("");setMessage("Location shared at "+new Date(pos.timestamp).toLocaleTimeString("en-IN"));}
   },err=>{setError(err.code===1?"Location permission denied. Enable location permission to share your machine position.":err.message);stopWatch();},{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
   setWatching(true);setMessage("GPS sharing is active. Keep this page open for continuous updates.");
