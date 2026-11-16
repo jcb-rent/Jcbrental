@@ -3,19 +3,21 @@
 | Decision | Status | Notes |
 |---|---|---|
 | Product model | Confirmed | Single rental company; not a marketplace |
-| Android apps | Confirmed | Separate Customer app and Owner/Driver app |
-| Owner/Driver access | Confirmed | One app; six-digit PIN determines role |
-| Repository | Confirmed | One public GitHub repository: jcb-rent/Jcbrental |
+| Initial platform | Confirmed | One responsive installable PWA from main |
+| PWA experiences | Confirmed | Customer /; Owner & Driver /operations |
+| Future native apps | Deferred | Convert PWA/workflows to Android APKs later |
+| Owner/Driver access | Confirmed | Shared PIN shell; server-verified role in production |
+| Repository | Confirmed | jcb-rent/Jcbrental |
 | GPS start | Confirmed | Driver explicitly taps Start |
-| Backend project | Selected | Supabase project Jcb ya, Mumbai region |
-| Hosting | Selected | Vercel Hobby/free domain preferred |
-| UI direction | Confirmed | Corporate blue, modern, English |
+| Backend | Selected | Supabase project Jcb ya, Mumbai; schema untouched |
+| Hosting | Selected | Vercel free domain preferred |
+| Canonical Vercel project | Selected | jcbrental; duplicates remain untouched |
+| UI | Confirmed | Corporate blue, modern, English |
 | Currency | Confirmed | INR |
-| Android framework | Pending | Confirm whether “native Android” means Kotlin or installable React Native/Expo APKs |
-| Vercel canonical project | Pending verification | Three Vercel projects point to the same GitHub repository; use the intended project only after confirmation |
+| PWA stack | Confirmed | React + TypeScript + Vite + Vite PWA |
 
 ## Security boundary
-Owner/Driver PIN validation must be server-side. Store only salted password hashes, rate-limit failed attempts, issue revocable sessions, and enforce role permissions in the backend. Never trust a client-side role flag.
+Owner/Driver PIN validation must be server-side. Store only salted hashes, rate-limit failures, issue revocable sessions and enforce backend role permissions. Never trust a client-side role flag.
 
 ## Demo vs production
-The demo uses fixtures and simulated actions. Production authentication, database writes, live GPS, push notifications, UPI/invoice workflows, and offline synchronization belong to their designated production phases.
+Demo uses fixtures and simulated actions. Production authentication, database writes, live GPS, push notifications, UPI/invoice workflows and robust offline synchronization belong to later production phases.
