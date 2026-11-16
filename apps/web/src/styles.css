@@ -50,3 +50,48 @@
 .phase8-location-card small{color:#718194;font-size:12px}
 .phase8-location-card a.primary{display:inline-block;width:max-content;text-decoration:none}
 @media(max-width:700px){.phase8-head{align-items:flex-start;flex-direction:column}.phase8-notifications,.phase8-live-fleet,.phase8-tracking{padding:14px}.phase8-live-fleet>article{align-items:flex-start;flex-direction:column}}
+
+
+/* Phase 09 — financial management */
+.finance-shell{display:grid;gap:18px;color:#15283b}
+.finance-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.finance-kpis article{background:#fff;border:1px solid #e4eaf0;border-radius:15px;padding:16px;display:grid;gap:5px;min-width:0}
+.finance-kpis small,.finance-eyebrow{font-size:10px;letter-spacing:1.1px;font-weight:800;color:#9a641f}
+.finance-kpis b{font-size:22px;letter-spacing:-.6px}
+.finance-kpis span{font-size:11px;color:#7b8998}
+.finance-card{background:#fff;border:1px solid #e4eaf0;border-radius:18px;padding:20px;min-width:0}
+.finance-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.finance-heading h2{font-size:19px;margin:4px 0}
+.finance-heading p{font-size:12px;color:#738294;margin:5px 0}
+.finance-pill{font-size:11px;border-radius:30px;padding:7px 10px;background:#fff5e8;color:#95530d;white-space:nowrap}
+.finance-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.finance-form.one{grid-template-columns:1fr}
+.finance-form label{display:grid;gap:6px;font-size:11px;font-weight:700;color:#4d6073}
+.finance-form input,.finance-form select{width:100%;min-width:0;border:1px solid #dce3eb;border-radius:9px;padding:10px 11px;background:#fff;color:#172b3e;font:inherit;font-size:13px}
+.finance-form input:focus,.finance-form select:focus{outline:2px solid #f7c17c;border-color:#e99432}
+.finance-form .finance-check{display:flex;align-items:center;gap:9px}
+.finance-form .finance-check input{width:auto}
+.finance-total{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;background:#f7f9fc;border-radius:10px;font-size:12px;color:#647487}
+.finance-total b{font-size:17px;color:#172b3e}
+.finance-primary{border:0;border-radius:9px;background:#f28a18;color:#172637;font-weight:800;font-size:12px;padding:11px 15px;cursor:pointer;align-self:end}
+.finance-primary:disabled{opacity:.55;cursor:not-allowed}
+.finance-table-wrap{overflow:auto;border-top:1px solid #edf0f4}
+.finance-table{width:100%;border-collapse:collapse;min-width:620px;text-align:left;font-size:12px}
+.finance-table th{font-size:10px;color:#7c8998;letter-spacing:.5px;padding:12px 10px}
+.finance-table td{border-top:1px solid #f0f2f5;padding:12px 10px;white-space:nowrap}
+.finance-table td small{display:block;font-size:10px;color:#8492a1;margin-top:4px}
+.finance-status{font-size:10px;font-weight:800;text-transform:capitalize;padding:5px 8px;border-radius:20px;background:#edf3f8;color:#536579}
+.finance-status.paid{background:#e9f7ef;color:#207344}
+.finance-status.partially_paid{background:#fff4df;color:#99600d}
+.finance-status.void{background:#fcebea;color:#a52b27}
+.finance-empty{font-size:12px;color:#8290a0;padding:12px 0}
+.finance-two{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.finance-recent{border-top:1px solid #edf0f4;margin-top:14px}
+.finance-recent>div{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f1f3f6}
+.finance-recent b{font-size:12px}
+.finance-recent small{display:block;font-size:10px;color:#7d8b99;margin-top:3px}
+.finance-error,.finance-notice{padding:11px 13px;border-radius:10px;font-size:12px;margin:0}
+.finance-error{background:#fff0ef;color:#a52b27}
+.finance-notice{background:#eef8f1;color:#226b3c}
+@media(max-width:900px){.finance-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.finance-two{grid-template-columns:1fr}}
+@media(max-width:650px){.finance-card{padding:14px}.finance-form{grid-template-columns:1fr 1fr}.finance-form.one{grid-template-columns:1fr}.finance-total{grid-column:1/-1}.finance-primary{grid-column:1/-1}}
