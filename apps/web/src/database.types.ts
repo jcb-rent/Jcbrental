@@ -643,7 +643,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      assign_booking: {
+        Args: {
+          p_booking_id: string
+          p_driver_user_id: string
+          p_machine_id: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       app_role: "owner" | "manager" | "driver" | "customer"
