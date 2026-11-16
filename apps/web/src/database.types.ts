@@ -206,6 +206,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bookings_machine_business_fk"
+            columns: ["machine_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "machines"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
             foreignKeyName: "bookings_machine_id_fkey"
             columns: ["machine_id"]
             isOneToOne: false
@@ -331,6 +338,13 @@ export type Database = {
             referencedColumns: ["id", "business_id"]
           },
           {
+            foreignKeyName: "attendance_driver_business_fk"
+            columns: ["driver_user_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
             foreignKeyName: "driver_attendance_business_id_fkey"
             columns: ["business_id"]
             isOneToOne: false
@@ -393,6 +407,27 @@ export type Database = {
           unit?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "logs_booking_business_fk"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "logs_driver_business_fk"
+            columns: ["driver_user_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "logs_machine_business_fk"
+            columns: ["machine_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "machines"
+            referencedColumns: ["id", "business_id"]
+          },
           {
             foreignKeyName: "machine_logs_booking_id_fkey"
             columns: ["booking_id"]
