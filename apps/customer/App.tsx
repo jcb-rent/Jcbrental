@@ -12,7 +12,7 @@ export default function App() {
           <Text style={styles.title}>Find the right machine for your site.</Text>
           <Text style={styles.subtitle}>Reliable equipment. Clear rental details. Work on your schedule.</Text>
         </View>
-        <Button label="Book a machine" onPress={() => {}} />
+        <Button label="Booking flow starts in Phase 02" disabled onPress={() => {}} />
         <Text style={styles.section}>Available equipment</Text>
         {demoMachines.map((machine) => (
           <Card key={machine.id}>
@@ -25,7 +25,7 @@ export default function App() {
             </View>
           </Card>
         ))}
-        <Text style={styles.note}>Demo preview · Availability and booking actions are simulated.</Text>
+        <Text style={styles.note}>Demo preview · Catalogue data is sample data; booking is not enabled yet.</Text>
       </ScrollView>
     </SafeAreaView>
   );
