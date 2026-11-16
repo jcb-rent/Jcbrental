@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "JCB Rental Service",
+    "slug": "jcb-rental-customer",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "jcbrentalcustomer",
+    "android": {
+      "package": "in.jcbrental.customer",
+      "versionCode": 1
+    }
+  }
+}
