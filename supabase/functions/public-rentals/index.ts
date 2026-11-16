@@ -47,8 +47,8 @@ Deno.serve(async (req: Request) => {
     if (!/^[a-f0-9]{64}$/.test(token)) return response({ error: "Invalid tracking link" }, 400, origin);
     const tokenHash = await digest(token);
     const { data: booking, error: bookingError } = await admin.from("bookings")
-      .select("id,status,starts_at,ends_at,machine_id")
-      .eq("tracking_token_hash", tokenHash).eq("business_id", BUSINESS_ID).maybeSingle();
+      .select("id,status,starts_at,ends_at,machine_id,tracking_token_expires_at")
+      .eq("tracking_token_hash", tokenHash).eq("business_id", BUSINESS_ID).gt("tracking_token_expires_at", new Date().toISOString()).maybeSingle();
     if (bookingError || !booking) return response({ error: "Tracking link is invalid or expired" }, 404, origin);
     let machine = null;
     let location = null;
@@ -125,7 +125,7 @@ Deno.serve(async (req: Request) => {
     diesel_included: body.diesel_included === true,
     operator_included: body.operator_included !== false,
     transport_required: body.transport_required === true,
-    status: "pending", payment_status: "unpaid", tracking_token_hash: trackingTokenHash,
+    status: "pending", payment_status: "unpaid", tracking_token_hash: trackingTokenHash, tracking_token_expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
   }).select("id,status,created_at").single();
   if (insertError || !booking) {
     await admin.from("public_booking_rate_limits").upsert({
