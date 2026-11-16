@@ -25,3 +25,10 @@ PWA-first confirmed. Native Android APK builds are deferred to a later phase.
 - [ ] Production deployment: currently blocked by Vercel API rate limit (HTTP 402, deployment quota retry-after 24 hours). No new PWA production URL is claimed yet.
 
 Static build success is not proof of backend/auth/payment/GPS features.
+
+
+## Phase 02 progress
+- Customer portal implementation committed on main: dashboard, machine catalogue/search/filter, booking wizard, estimate breakdown, request timeline, history, sample receipt and support form.
+- Demo-only boundaries are explicit: no backend writes, owner notifications, payment or authoritative availability.
+- See [Phase 02 Customer Demo](phase-02-customer-demo.md).
+- Phase 02 CI and responsive QA are pending; production deployment remains deferred until the combined release.
