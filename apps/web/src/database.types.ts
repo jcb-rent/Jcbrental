@@ -651,6 +651,13 @@ export type Database = {
         }
         Returns: string
       }
+      driver_set_booking_status: {
+        Args: {
+          p_booking_id: string
+          p_status: Database["public"]["Enums"]["booking_status"]
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "owner" | "manager" | "driver" | "customer"
