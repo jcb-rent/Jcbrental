@@ -29,8 +29,8 @@ export default function DriverPortal(){
    machineIds.length?supabase.from("machines").select("id,name,fleet_code").in("id",machineIds):Promise.resolve({data:[],error:null})
   ]);
   if(b.error||m.error){setError(b.error?.message||m.error?.message||"Unable to load assigned work.");setLoading(false);return;}
-  const machineMap=new Map((m.data||[]).map(x=>[x.id,x]));
-  const bookingMap=new Map((b.data||[]).map(x=>[x.id,x]));
+  const machineMap=new Map<string,{id:string;name:string;fleet_code:string}>((m.data||[]).map(x=>[x.id,x] as [string,{id:string;name:string;fleet_code:string}]));
+  const bookingMap=new Map<string,{id:string;customer_name:string;customer_mobile:string;site_address:string;starts_at:string;rental_unit:"hour"|"shift"|"day"|"month"|"project";quantity:number;status:string;notes:string|null;work_type:string|null}>((b.data||[]).map(x=>[x.id,x] as [string,{id:string;customer_name:string;customer_mobile:string;site_address:string;starts_at:string;rental_unit:"hour"|"shift"|"day"|"month"|"project";quantity:number;status:string;notes:string|null;work_type:string|null}]));
   const next=(a.data||[]).flatMap(x=>{const bk=bookingMap.get(x.booking_id),mc=machineMap.get(x.machine_id);if(!bk||!mc)return[];return[{assignmentId:x.id,id:bk.id,customer:bk.customer_name,mobile:bk.customer_mobile,machineId:mc.id,machine:mc.name+" · "+mc.fleet_code,site:bk.site_address,start:bk.starts_at,unit:bk.rental_unit,quantity:bk.quantity,status:bk.status as Job["status"],notes:bk.notes||bk.work_type||""}];});
   setJobs(next);setSelected(s=>next.some(j=>j.id===s)?s:next[0]?.id||"");setAttendance(att.data as Attendance|null);setLogs((lg.data||[]) as LogRow[]);setLoading(false);
  },[]);
