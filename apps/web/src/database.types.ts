@@ -578,6 +578,36 @@ export type Database = {
           },
         ]
       }
+      staff_login_attempts: {
+        Row: {
+          attempts: number
+          blocked_until: string | null
+          id: string
+          identifier_hash: string
+          ip_hash: string
+          updated_at: string
+          window_started_at: string
+        }
+        Insert: {
+          attempts?: number
+          blocked_until?: string | null
+          id?: string
+          identifier_hash: string
+          ip_hash: string
+          updated_at?: string
+          window_started_at?: string
+        }
+        Update: {
+          attempts?: number
+          blocked_until?: string | null
+          id?: string
+          identifier_hash?: string
+          ip_hash?: string
+          updated_at?: string
+          window_started_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
