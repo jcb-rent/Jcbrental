@@ -15,5 +15,13 @@ PWA-first confirmed. Native Android APK builds are deferred to a later phase.
 - Legacy Expo scaffolds retained but excluded from active workspace for later conversion reference.
 - No secrets/customer data committed; Supabase database intentionally untouched.
 
-## Validation still required
-Dependency installation, TypeScript check, production Vite build, PWA output inspection, CI green and successful Vercel deployment. Static build is not proof of backend/auth/payment/GPS features.
+## Validation results
+- [x] Dependency installation on GitHub Actions.
+- [x] TypeScript check.
+- [x] Production Vite build.
+- [x] PWA manifest, service worker and index output checks.
+- [x] CI green on main (run 31).
+- [x] Vercel project configured for Vite, apps/web root, pnpm build and dist output.
+- [ ] Production deployment: currently blocked by Vercel API rate limit (HTTP 402, deployment quota retry-after 24 hours). No new PWA production URL is claimed yet.
+
+Static build success is not proof of backend/auth/payment/GPS features.
