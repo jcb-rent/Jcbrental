@@ -1,0 +1,2 @@
+alter table public.machine_logs drop constraint if exists logs_booking_business_fk;
+alter table public.machine_logs add constraint logs_booking_business_fk foreign key(booking_id,business_id) references public.bookings(id,business_id) on delete restrict;
