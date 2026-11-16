@@ -37,7 +37,7 @@ export default function DriverPortal(){
  useEffect(()=>{void refresh();},[refresh]);
  async function changeStatus(status:"in_progress"|"completed"){
   if(!supabase||!active)return;setBusy(true);setError("");
-  const {error:e}=await supabase.from("bookings").update({status}).eq("id",active.id);
+  const {error:e}=await supabase.rpc("driver_set_booking_status",{p_booking_id:active.id,p_status:status});
   setBusy(false);if(e){setError(e.message);return;}setNotice(status==="in_progress"?"Work started and saved.":"Work completion saved.");await refresh();
  }
  async function markAttendance(){
