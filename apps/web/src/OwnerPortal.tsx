@@ -59,11 +59,8 @@ export default function OwnerPortal(){
  }
  async function assignBooking(e:React.FormEvent){
   e.preventDefault();if(!supabase||!showAssign||!driverId||!machineId)return;setBusy(true);setError("");
-  const {data:{user}}=await supabase.auth.getUser();
-  if(!user){setBusy(false);setError("Please sign in again.");return;}
-  const {error:e1}=await supabase.from("booking_assignments").insert({business_id:businessId,booking_id:showAssign.id,machine_id:machineId,driver_user_id:driverId,assigned_by:user.id,active:true});
-  if(!e1){const {error:e2}=await supabase.from("bookings").update({machine_id:machineId,status:"assigned"}).eq("id",showAssign.id).eq("business_id",businessId);if(e2){setError(e2.message);setBusy(false);return;}}
-  setBusy(false);if(e1){setError(e1.message);return;}setShowAssign(null);setNotice("Machine and driver assignment saved.");await refresh();
+  const {error:e1}=await supabase.rpc("assign_booking",{p_booking_id:showAssign.id,p_machine_id:machineId,p_driver_user_id:driverId});
+  setBusy(false);if(e1){setError(e1.message);return;}setShowAssign(null);setDriverId("");setMachineId("");setNotice("Machine and driver assignment saved atomically.");await refresh();
  }
  return <div className="owner-shell"><aside className="owner-sidebar"><div className="owner-brand"><b>J</b><span>JCB RENTAL<small>OWNER CONSOLE</small></span></div><span className="owner-caption">MANAGEMENT</span>{["Overview","Bookings","Fleet","Drivers","Business settings"].map((s,i)=><button key={s} className={section===s?"owner-active":""} onClick={()=>setSection(s)}><span>{["▦","▤","▰","♙","⚙"][i]}</span>{s}{s==="Bookings"&&pending.length>0?<i>{pending.length}</i>:null}</button>)}<div className="owner-profile"><div className="owner-avatar">O</div><span><b>Business Owner</b><small>Secure account · Live data</small></span></div></aside>
  <main className="owner-main"><header className="owner-head"><div><span className="eyebrow dark">JCB RENTAL SERVICE / MANAGEMENT</span><h1>{section}</h1><p>Live business data from the secured rental database.</p></div><span className="owner-demo">● LIVE DATABASE</span></header>
