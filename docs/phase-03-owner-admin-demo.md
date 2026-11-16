@@ -22,9 +22,13 @@
 - Verified machine inventory, driver records, rental rates, business contact details, tax settings and advance/deposit policy.
 - Automated tests for authorization, booking state transitions, fleet status and assignment constraints.
 
-## QA
-- [ ] Run GitHub Actions production build and PWA output checks after this phase.
-- [ ] Verify customer route / and operations route /operations.
-- [ ] Test approval, rejection, assignment, fleet create/status, driver directory and settings interactions.
-- [ ] Verify responsive navigation and reduced-motion behavior.
-- [ ] Complete visual and functional QA on actual mobile browsers before release.
+## QA status
+- [x] GitHub Actions dependency installation completed.
+- [x] TypeScript check completed successfully.
+- [x] Vite production build completed successfully.
+- [x] PWA output verified: `manifest.webmanifest`, `sw.js` and `index.html` generated.
+- [x] CI passed for the Phase 03 UI commit (run 43) and the Phase 03 documentation commit (run 44).
+- [ ] Browser-level route and interaction checks for `/` and `/operations` remain pending a deployable preview.
+- [ ] Responsive and reduced-motion visual QA on real mobile browsers remains pending a deployable preview.
+
+The browser-level checks are intentionally not marked complete: the agreed release sequence is to deploy the phases together, and the current Vercel deployment quota previously returned HTTP 402. Do not treat the demo as production-ready until these checks and the production backend/security requirements above are completed.
