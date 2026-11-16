@@ -1,15 +1,1 @@
-{
-  "name": "jcb-rental-service",
-  "private": true,
-  "version": "0.1.0",
-  "packageManager": "pnpm@10.12.1",
-  "workspaces": ["apps/*", "packages/*"],
-  "scripts": {
-    "start:customer": "pnpm --filter @jcb/customer start",
-    "start:operations": "pnpm --filter @jcb/operations start",
-    "typecheck": "pnpm -r typecheck"
-  },
-  "devDependencies": {
-    "typescript": "~6.0.3"
-  }
-}
+{"name":"jcb-rental-service","private":true,"version":"0.2.0","packageManager":"pnpm@10.12.1","workspaces":["apps/web","packages/demo-data"],"scripts":{"dev":"pnpm --filter @jcb/web dev","build":"pnpm --filter @jcb/web build","preview":"pnpm --filter @jcb/web preview","typecheck":"pnpm --filter @jcb/web typecheck"},"devDependencies":{"typescript":"~6.0.3"}}
