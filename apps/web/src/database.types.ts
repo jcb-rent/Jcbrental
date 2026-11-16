@@ -133,6 +133,7 @@ export type Database = {
           site_landmark: string | null
           starts_at: string
           status: Database["public"]["Enums"]["booking_status"]
+          tracking_token_expires_at: string | null
           tracking_token_hash: string | null
           transport_required: boolean
           updated_at: string
@@ -159,6 +160,7 @@ export type Database = {
           site_landmark?: string | null
           starts_at: string
           status?: Database["public"]["Enums"]["booking_status"]
+          tracking_token_expires_at?: string | null
           tracking_token_hash?: string | null
           transport_required?: boolean
           updated_at?: string
@@ -185,6 +187,7 @@ export type Database = {
           site_landmark?: string | null
           starts_at?: string
           status?: Database["public"]["Enums"]["booking_status"]
+          tracking_token_expires_at?: string | null
           tracking_token_hash?: string | null
           transport_required?: boolean
           updated_at?: string
@@ -360,6 +363,202 @@ export type Database = {
           },
         ]
       }
+      driver_tracking_sessions: {
+        Row: {
+          assignment_id: string
+          booking_id: string
+          branch_id: string | null
+          business_id: string
+          created_at: string
+          driver_user_id: string
+          ended_at: string | null
+          id: string
+          last_location_at: string | null
+          machine_id: string
+          started_at: string
+        }
+        Insert: {
+          assignment_id: string
+          booking_id: string
+          branch_id?: string | null
+          business_id: string
+          created_at?: string
+          driver_user_id: string
+          ended_at?: string | null
+          id?: string
+          last_location_at?: string | null
+          machine_id: string
+          started_at?: string
+        }
+        Update: {
+          assignment_id?: string
+          booking_id?: string
+          branch_id?: string | null
+          business_id?: string
+          created_at?: string
+          driver_user_id?: string
+          ended_at?: string | null
+          id?: string
+          last_location_at?: string | null
+          machine_id?: string
+          started_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_tracking_sessions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tracking_session_assignment_fk"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "booking_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tracking_session_booking_business_fk"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "tracking_session_branch_business_fk"
+            columns: ["branch_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "tracking_session_business_fk"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tracking_session_driver_business_fk"
+            columns: ["driver_user_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "tracking_session_machine_business_fk"
+            columns: ["machine_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "machines"
+            referencedColumns: ["id", "business_id"]
+          },
+        ]
+      }
+      machine_location_updates: {
+        Row: {
+          accuracy_m: number | null
+          assignment_id: string
+          booking_id: string
+          branch_id: string | null
+          business_id: string
+          captured_at: string
+          driver_user_id: string
+          heading_deg: number | null
+          id: number
+          latitude: number
+          longitude: number
+          machine_id: string
+          received_at: string
+          speed_mps: number | null
+          tracking_session_id: string
+        }
+        Insert: {
+          accuracy_m?: number | null
+          assignment_id: string
+          booking_id: string
+          branch_id?: string | null
+          business_id: string
+          captured_at: string
+          driver_user_id: string
+          heading_deg?: number | null
+          id?: never
+          latitude: number
+          longitude: number
+          machine_id: string
+          received_at?: string
+          speed_mps?: number | null
+          tracking_session_id: string
+        }
+        Update: {
+          accuracy_m?: number | null
+          assignment_id?: string
+          booking_id?: string
+          branch_id?: string | null
+          business_id?: string
+          captured_at?: string
+          driver_user_id?: string
+          heading_deg?: number | null
+          id?: never
+          latitude?: number
+          longitude?: number
+          machine_id?: string
+          received_at?: string
+          speed_mps?: number | null
+          tracking_session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "location_booking_business_fk"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "location_branch_business_fk"
+            columns: ["branch_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "location_business_fk"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "location_driver_business_fk"
+            columns: ["driver_user_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "location_machine_business_fk"
+            columns: ["machine_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "machines"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "machine_location_updates_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "booking_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "machine_location_updates_tracking_session_id_fkey"
+            columns: ["tracking_session_id"]
+            isOneToOne: false
+            referencedRelation: "driver_tracking_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       machine_logs: {
         Row: {
           booking_id: string | null
@@ -527,6 +726,73 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          audience: string
+          body: string
+          booking_id: string | null
+          branch_id: string | null
+          business_id: string
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          read_at: string | null
+          recipient_user_id: string | null
+          title: string
+        }
+        Insert: {
+          audience: string
+          body: string
+          booking_id?: string | null
+          branch_id?: string | null
+          business_id: string
+          created_at?: string
+          event_type: string
+          id?: string
+          payload?: Json
+          read_at?: string | null
+          recipient_user_id?: string | null
+          title: string
+        }
+        Update: {
+          audience?: string
+          body?: string
+          booking_id?: string | null
+          branch_id?: string | null
+          business_id?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          read_at?: string | null
+          recipient_user_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_booking_business_fk"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "notifications_branch_business_fk"
+            columns: ["branch_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "notifications_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           branch_id: string | null
@@ -656,6 +922,26 @@ export type Database = {
           p_booking_id: string
           p_status: Database["public"]["Enums"]["booking_status"]
         }
+        Returns: undefined
+      }
+      record_driver_location: {
+        Args: {
+          p_accuracy_m?: number
+          p_captured_at?: string
+          p_heading_deg?: number
+          p_latitude: number
+          p_longitude: number
+          p_session_id: string
+          p_speed_mps?: number
+        }
+        Returns: number
+      }
+      start_driver_tracking: {
+        Args: { p_assignment_id: string }
+        Returns: string
+      }
+      stop_driver_tracking: {
+        Args: { p_session_id: string }
         Returns: undefined
       }
     }
