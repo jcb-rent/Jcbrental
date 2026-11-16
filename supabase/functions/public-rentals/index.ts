@@ -62,7 +62,16 @@ Deno.serve(async (req: Request) => {
         location = locationRow;
       }
     }
-    return response({ booking: { id: booking.id, status: booking.status, starts_at: booking.starts_at, ends_at: booking.ends_at }, machine, location }, 200, origin);
+    const [{ data: invoice }, { data: business }] = await Promise.all([
+      admin.from("rental_invoices").select("invoice_number,status,total_amount,amount_paid,balance_amount,currency").eq("booking_id", booking.id).eq("business_id", BUSINESS_ID).maybeSingle(),
+      admin.from("businesses").select("upi_id,upi_qr_path").eq("id", BUSINESS_ID).maybeSingle()
+    ]);
+    return response({
+      booking: { id: booking.id, status: booking.status, starts_at: booking.starts_at, ends_at: booking.ends_at },
+      machine, location,
+      invoice: invoice ? { invoice_number: invoice.invoice_number, status: invoice.status, total_amount: invoice.total_amount, amount_paid: invoice.amount_paid, balance_amount: invoice.balance_amount, currency: invoice.currency } : null,
+      payment: { upi_id: business?.upi_id || null, qr_path: business?.upi_qr_path || null }
+    }, 200, origin);
   }
 
   if (req.method === "GET") {
