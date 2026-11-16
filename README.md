@@ -1,32 +1,25 @@
 # JCB Rental Service
 
-India-first JCB rental management platform for one rental business.
+India-first rental booking and fleet operations platform for one JCB rental business.
 
-## Apps
-- `apps/customer`: separate Customer Android app.
-- `apps/operations`: Owner and Driver experiences in one Android app, with role-specific access.
+## Delivery direction
+Start with one installable responsive Progressive Web App (PWA) on the main branch. Native Android APKs are deferred until a later conversion phase.
 
-## Shared packages
-- `packages/design-system`: shared corporate-blue UI tokens and components.
-- `packages/demo-data`: sample-only fixtures.
+## Routes
+- / — Customer experience: browse equipment and simulated guest booking request.
+- /operations — Owner & Driver workspace demo with role preview and PIN-entry shell.
 
-## Tech stack
-- React Native + Expo (two separate Android application identities)
-- TypeScript + pnpm workspaces
-- Supabase is the selected backend platform for later production phases.
-- Vercel is the selected hosting platform for supporting web services.
+Both experiences share one PWA build. Demo only: no real authentication, booking submission, payment, GPS, notifications or customer data storage.
+
+## Stack
+React, TypeScript, Vite, pnpm workspaces, Vite PWA / Workbox and Vercel. Supabase project Jcb ya is selected for later production phases; database remains untouched.
 
 ## Local setup
-Requires Node.js 22.13+ and pnpm.
+Node.js 22.13+ and pnpm 10.12.1:
 
-```bash
-pnpm install
-pnpm start:customer
-# In another terminal:
-pnpm start:operations
-```
+    pnpm install
+    pnpm dev
+    pnpm build
 
-## Phase 01 status
-The repository currently contains the demo foundation and UI shells. Demo data is local and illustrative. PIN authentication, GPS, bookings, payments, push notifications and production database integration are not active in this phase.
-
-See `docs/phase-01-foundation.md`, `docs/design-system.md`, and `docs/phase-01-implementation.md`.
+## Demo safety
+Catalogue entries are fixtures. Guest request form only demonstrates the flow and confirms locally. PIN form does not verify or store PINs. Offline mode caches the app shell only; no booking is confirmed offline.
