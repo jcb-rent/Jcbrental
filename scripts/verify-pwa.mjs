@@ -7,7 +7,6 @@ const required = [
   "index.html",
   "manifest.webmanifest",
   "sw.js",
-  "registerSW.js",
 ];
 const failures = [];
 for (const file of required) {
@@ -28,6 +27,7 @@ if (existsSync(resolve(dist, "manifest.webmanifest"))) {
   if (manifest.display !== "standalone") failures.push("PWA display mode must be standalone");
   if (!Array.isArray(manifest.icons) || manifest.icons.length === 0) failures.push("PWA manifest has no icons");
 }
+if (!existsSync(resolve(root, "src/main.tsx")) || !readFileSync(resolve(root, "src/main.tsx"), "utf8").includes("registerSW")) failures.push("App entry point is missing virtual PWA service-worker registration");
 if (existsSync(resolve(dist, "sw.js"))) {
   const sw = readFileSync(resolve(dist, "sw.js"), "utf8");
   if (!sw.includes("precache")) failures.push("Service worker does not appear to include a precache manifest");
