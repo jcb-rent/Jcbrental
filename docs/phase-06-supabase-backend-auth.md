@@ -71,5 +71,5 @@ where p.id = 'OWNER_AUTH_USER_UUID'::uuid;
 - Eight public tables verified and RLS enabled on all eight.
 - Nine database migrations recorded in Supabase migration history.
 - Supabase security advisor returned zero lints after revoking public execution from the existing event-trigger function. Performance advisor no longer reports multiple-permissive-policy or unindexed-foreign-key warnings; unused-index notices remain because no production query traffic exists yet.
-- Performance advisor still reports some unindexed foreign keys and multiple permissive policy warnings; these are tracked for further tuning. Unused-index notices are expected before real query traffic exists.
+- Performance advisor currently reports only unused-index notices, which are expected before real query traffic exists.
 - CI build and live browser authentication tests are pending.
