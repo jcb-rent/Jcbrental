@@ -102,3 +102,26 @@
 .phase9-payment-card p{font-size:13px;margin:0;color:#596b7b}
 .phase9-payment-card small{font-size:11px;line-height:1.5;color:#7c8997}
 .phase9-upi-qr{width:180px;max-width:100%;height:auto;object-fit:contain;border:1px solid #e6e9ed;border-radius:10px;background:white;padding:8px}
+
+
+.finance-view{display:block;border:0;background:none;color:#a75d12;padding:4px 0;font-size:10px;font-weight:800;cursor:pointer}
+.finance-print-overlay{position:fixed;inset:0;z-index:1000;background:rgba(9,22,36,.72);overflow:auto;padding:22px;display:flex;justify-content:center;align-items:flex-start}
+.finance-print-sheet{width:min(780px,100%);background:#fff;color:#1c2c3c;padding:34px;border-radius:12px;box-shadow:0 20px 60px #0003}
+.finance-print-actions{display:flex;justify-content:flex-end;gap:8px;margin-bottom:24px}
+.finance-print-actions button{border:1px solid #dce3eb;background:#f7f9fb;border-radius:8px;padding:9px 12px;font-weight:700;cursor:pointer}
+.finance-print-sheet header{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #e7ebef;padding-bottom:18px}
+.finance-print-sheet header h1{font-size:23px;margin:0 0 5px}
+.finance-print-sheet header p,.finance-print-sheet header small{font-size:12px;color:#718092;margin:4px 0}
+.finance-print-number{text-align:right;display:grid;align-content:start;gap:5px}
+.finance-print-number b{font-size:16px}
+.finance-print-customer{display:grid;gap:5px;padding:20px 0;font-size:12px}
+.finance-print-customer span{color:#657587}
+.finance-print-sheet table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 18px}
+.finance-print-sheet th,.finance-print-sheet td{padding:11px 8px;border-bottom:1px solid #e9edf1;text-align:left}
+.finance-print-sheet th:last-child,.finance-print-sheet td:last-child{text-align:right}
+.finance-print-totals{width:min(340px,100%);margin-left:auto;display:grid;gap:8px;font-size:12px}
+.finance-print-totals>div{display:flex;justify-content:space-between;gap:16px}
+.finance-print-totals .grand{border-top:1px solid #dce3eb;padding-top:8px;font-size:14px;font-weight:800}
+.finance-print-sheet footer{margin-top:24px;border-top:1px solid #e9edf1;padding-top:12px;font-size:12px}
+.finance-print-sheet footer small{color:#748293}
+@media print{body *{visibility:hidden!important}.finance-print-overlay,.finance-print-overlay *{visibility:visible!important}.finance-print-overlay{position:absolute;inset:0;padding:0;background:#fff;overflow:visible}.finance-print-sheet{width:100%;box-shadow:none;border-radius:0;padding:12px}.finance-print-actions{display:none!important}}
