@@ -42,6 +42,29 @@ Deno.serve(async (req: Request) => {
   if (!url || !serviceKey) return response({ error: "Booking service is not configured" }, 503, origin);
   const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
 
+  if (req.method === "GET" && url && new URL(req.url).searchParams.has("track")) {
+    const token = new URL(req.url).searchParams.get("track") || "";
+    if (!/^[a-f0-9]{64}$/.test(token)) return response({ error: "Invalid tracking link" }, 400, origin);
+    const tokenHash = await digest(token);
+    const { data: booking, error: bookingError } = await admin.from("bookings")
+      .select("id,status,starts_at,ends_at,machine_id")
+      .eq("tracking_token_hash", tokenHash).eq("business_id", BUSINESS_ID).maybeSingle();
+    if (bookingError || !booking) return response({ error: "Tracking link is invalid or expired" }, 404, origin);
+    let machine = null;
+    let location = null;
+    if (booking.machine_id) {
+      const { data: machineRow } = await admin.from("machines").select("name,fleet_code").eq("id", booking.machine_id).maybeSingle();
+      machine = machineRow;
+      if (["assigned","in_progress"].includes(booking.status)) {
+        const { data: locationRow } = await admin.from("machine_location_updates")
+          .select("latitude,longitude,accuracy_m,speed_mps,heading_deg,captured_at")
+          .eq("booking_id", booking.id).order("captured_at", { ascending: false }).limit(1).maybeSingle();
+        location = locationRow;
+      }
+    }
+    return response({ booking: { id: booking.id, status: booking.status, starts_at: booking.starts_at, ends_at: booking.ends_at }, machine, location }, 200, origin);
+  }
+
   if (req.method === "GET") {
     const { data, error } = await admin.from("machines")
       .select("id,fleet_code,name,category,description,hourly_rate,shift_rate,daily_rate,monthly_rate,status")
@@ -89,6 +112,8 @@ Deno.serve(async (req: Request) => {
     return response({ error: "Too many booking attempts. Please try again later." }, 429, origin);
   }
 
+  const trackingToken = [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, "0")).join("");
+  const trackingTokenHash = await digest(trackingToken);
   const { data: booking, error: insertError } = await admin.from("bookings").insert({
     business_id: BUSINESS_ID, branch_id: BRANCH_ID, machine_id: machineId,
     customer_name: name, customer_mobile: phone, site_address: site,
@@ -100,7 +125,7 @@ Deno.serve(async (req: Request) => {
     diesel_included: body.diesel_included === true,
     operator_included: body.operator_included !== false,
     transport_required: body.transport_required === true,
-    status: "pending", payment_status: "unpaid",
+    status: "pending", payment_status: "unpaid", tracking_token_hash: trackingTokenHash,
   }).select("id,status,created_at").single();
   if (insertError || !booking) {
     await admin.from("public_booking_rate_limits").upsert({
@@ -115,5 +140,5 @@ Deno.serve(async (req: Request) => {
     window_started_at: expired ? now.toISOString() : rate!.window_started_at,
     blocked_until: null, updated_at: now.toISOString(),
   }, { onConflict: "phone_hash,ip_hash" });
-  return response({ booking: { id: booking.id, status: booking.status, created_at: booking.created_at } }, 201, origin);
+  return response({ booking: { id: booking.id, status: booking.status, created_at: booking.created_at }, tracking_token: trackingToken }, 201, origin);
 });
