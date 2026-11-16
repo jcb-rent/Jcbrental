@@ -17,7 +17,7 @@
 - [x] Foreign-key performance advisor warning for Phase 09 tables resolved.
 
 ## Pending
-- [ ] GitHub Actions TypeScript/build/PWA check for Phase 09 UI changes.
+- [x] GitHub Actions TypeScript check and production Vite build passed after fixing nullable RPC argument and invoice address typing errors (run #181).\n- [x] PWA integration verification passed (run #181).
 - [ ] Physical Android print/share and customer UPI QR scan test.
 - [ ] Owner real-account end-to-end invoice/payment/expense UI test (latest UI cannot be deployed until Vercel quota clears).
 - [ ] Production deployment/browser QA blocked by selected Vercel deployment quota.
