@@ -137,12 +137,12 @@ create policy "staff read machine logs" on public.machine_logs for select to aut
 create policy "drivers add own machine logs" on public.machine_logs for insert to authenticated with check(driver_user_id=(select auth.uid()) and business_id=(select private.current_business_id()) and (select private.current_app_role())='driver');
 create policy "managers manage machine logs" on public.machine_logs for all to authenticated using(business_id=(select private.current_business_id()) and (select private.can_manage_business())) with check(business_id=(select private.current_business_id()) and (select private.can_manage_business()));
 
-grant usage on schema public to authenticated;
+grant usage on schema public to authenticated, anon;
 grant select,update on public.businesses to authenticated;
 grant select,insert,update,delete on public.branches to authenticated;
 grant select,update on public.profiles to authenticated;
 grant select,insert,update,delete on public.machines to authenticated;
-grant select,insert on public.bookings to authenticated;
-grant select on public.booking_assignments to authenticated;
-grant select on public.driver_attendance to authenticated;
-grant select on public.machine_logs to authenticated;
+grant select,insert,update on public.bookings to authenticated;
+grant select,insert,update,delete on public.booking_assignments to authenticated;
+grant select,insert,update on public.driver_attendance to authenticated;
+grant select,insert,update on public.machine_logs to authenticated;
