@@ -1,0 +1,1 @@
+create index rental_invoice_items_invoice_business_fk_idx on public.rental_invoice_items(invoice_id,business_id);
