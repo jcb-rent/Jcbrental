@@ -578,6 +578,36 @@ export type Database = {
           },
         ]
       }
+      public_booking_rate_limits: {
+        Row: {
+          attempts: number
+          blocked_until: string | null
+          id: string
+          ip_hash: string
+          phone_hash: string
+          updated_at: string
+          window_started_at: string
+        }
+        Insert: {
+          attempts?: number
+          blocked_until?: string | null
+          id?: string
+          ip_hash: string
+          phone_hash: string
+          updated_at?: string
+          window_started_at?: string
+        }
+        Update: {
+          attempts?: number
+          blocked_until?: string | null
+          id?: string
+          ip_hash?: string
+          phone_hash?: string
+          updated_at?: string
+          window_started_at?: string
+        }
+        Relationships: []
+      }
       staff_login_attempts: {
         Row: {
           attempts: number
