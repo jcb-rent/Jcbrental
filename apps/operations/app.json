@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "JCB Rental Operations",
+    "slug": "jcb-rental-operations",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "jcbrentalops",
+    "android": {
+      "package": "in.jcbrental.operations",
+      "versionCode": 1
+    }
+  }
+}
