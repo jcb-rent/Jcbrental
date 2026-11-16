@@ -1,0 +1,19 @@
+name: Phase 07 live booking API smoke test
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  guest-booking-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit one temporary guest booking
+        shell: bash
+        run: |
+          status=$(curl --silent --show-error --output /tmp/booking.json --write-out '%{http_code}' \
+            --request POST 'https://wvtjuhxcjwvfnqvcjnmc.supabase.co/functions/v1/public-rentals' \
+            --header 'Content-Type: application/json' \
+            --data '{"machine_id":"42b3d404-f0c6-408a-9bd3-23f8fcd5f387","customer_name":"Phase 07 API QA","customer_mobile":"9999900001","site_address":"Temporary QA Site, Firozabad","rental_unit":"hour","quantity":1,"starts_at":"2026-11-20T10:00:00+05:30","work_type":"Integration test"}')
+          echo "HTTP status: $status"
+          cat /tmp/booking.json
+          test "$status" = "201"
+          node -e 'const r=require("/tmp/booking.json"); if(!r.booking?.id || r.booking.status!=="pending") process.exit(1); console.log("Guest booking POST passed:",r.booking.id)'
