@@ -1,6 +1,0 @@
--- See the complete deployed migration recorded in the Supabase project migration history.
--- Phase 08 GPS tracking, notifications, and private machine-log evidence
--- This migration is deployed in Supabase; the file is the repository source-of-truth.
--- Tracking sessions require a driver to explicitly start GPS sharing for an in-progress assigned job.
--- Location writes are restricted to an active session and rate-limited to one per 10 seconds.
--- Customer location disclosure is handled only by the token-verified public-rentals Edge Function.
