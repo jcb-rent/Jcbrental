@@ -28,7 +28,7 @@ export default function App() {
             style={styles.pin}
             accessibilityLabel="Six digit PIN"
           />
-          <Button label="Continue" disabled={pin.length !== 6} onPress={() => {}} />
+          <Button label="PIN sign-in is not active in this demo phase" disabled onPress={() => {}} />
         </Card>
         <Text style={styles.section}>Preview demo screens</Text>
         <View style={styles.actions}>
