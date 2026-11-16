@@ -21,7 +21,7 @@
 
 ## Access model
 - Customer records are scoped to auth.uid().
-- Staff access is scoped to the business_id assigned to the authenticated profile.
+- Staff access is scoped to the business_id assigned to the authenticated profile. Drivers can read only their own assignments, bookings and machine logs; managers can read business-wide records.
 - Owner/Manager manage business operations; Driver can read own assignments, check in/out and append their own machine logs.
 - Profiles can only update full_name and phone through the client.
 - Anonymous users have no table privileges. Guest booking submission/tracking will be implemented via a server-side endpoint in Phase 07.
@@ -60,7 +60,7 @@ where p.id = 'OWNER_AUTH_USER_UUID'::uuid;
 4. Driver Auth users can be created in Authentication → Users. Their profile is created with customer role by trigger; promote/link them to driver only through an administrator-controlled workflow. The Owner's in-app driver provisioning UI is not yet implemented.
 
 ## Remaining work / limitations
-- No actual Owner email/account has been provisioned yet; the client's email is required.
+- No actual Owner email/account has been provisioned yet; the client's email is required. The first Owner must be created in Supabase Auth and linked to the business using the documented bootstrap SQL.
 - No PIN auth, account invitation workflow, owner-managed driver creation, password reset UX or MFA rollout yet.
 - Customer portal, booking requests, Owner dashboard and Driver workspace are not yet wired to these tables. Phase 07 will implement business setup, machine and booking CRUD, assignment workflows and guest booking API.
 - Driver GPS ingestion, notifications, file evidence storage, billing and offline sync are later phases.
@@ -69,7 +69,7 @@ where p.id = 'OWNER_AUTH_USER_UUID'::uuid;
 ## Verification
 - Supabase project reports ACTIVE_HEALTHY.
 - Eight public tables verified and RLS enabled on all eight.
-- Five database migrations recorded in Supabase migration history.
-- Supabase security advisor returned zero lints after revoking public execution from the existing event-trigger function.
+- Nine database migrations recorded in Supabase migration history.
+- Supabase security advisor returned zero lints after revoking public execution from the existing event-trigger function. Performance advisor no longer reports multiple-permissive-policy or unindexed-foreign-key warnings; unused-index notices remain because no production query traffic exists yet.
 - Performance advisor still reports some unindexed foreign keys and multiple permissive policy warnings; these are tracked for further tuning. Unused-index notices are expected before real query traffic exists.
 - CI build and live browser authentication tests are pending.
