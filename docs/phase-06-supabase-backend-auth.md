@@ -69,8 +69,9 @@ where p.id = 'OWNER_AUTH_USER_UUID'::uuid;
 ## Verification
 - Supabase project reports ACTIVE_HEALTHY.
 - Eight public tables verified and RLS enabled on all eight.
-- Ten database migrations recorded in Supabase migration history.
+- Eleven database migrations recorded in Supabase migration history.
 - `staff-pin-login` Edge Function is ACTIVE (version 1) and deployed to the selected Supabase project.
+- The staff PIN attempt table is RLS-protected, has no anon/authenticated table privileges, and is writable only by the server-side service role.
 - Supabase security advisor returned zero lints after revoking public execution from the existing event-trigger function. Performance advisor no longer reports multiple-permissive-policy or unindexed-foreign-key warnings; unused-index notices remain because no production query traffic exists yet.
 - Performance advisor currently reports only unused-index notices, which are expected before real query traffic exists.
 - CI build and live browser authentication tests are pending.
