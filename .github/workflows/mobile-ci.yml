@@ -20,5 +20,5 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: TypeScript check and production build
         run: pnpm build
-      - name: Verify PWA output
-        run: test -f apps/web/dist/manifest.webmanifest && test -f apps/web/dist/sw.js && test -f apps/web/dist/index.html
+      - name: Verify PWA integration outputs
+        run: node scripts/verify-pwa.mjs
