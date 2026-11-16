@@ -262,39 +262,137 @@ export type Database = {
           },
         ]
       }
+      business_expenses: {
+        Row: {
+          amount: number
+          booking_id: string | null
+          branch_id: string | null
+          business_id: string
+          category: string
+          created_at: string
+          created_by: string
+          description: string
+          evidence_path: string | null
+          expense_date: string
+          id: string
+          machine_id: string | null
+          payment_method: string
+          reference: string | null
+          vendor: string | null
+        }
+        Insert: {
+          amount: number
+          booking_id?: string | null
+          branch_id?: string | null
+          business_id: string
+          category: string
+          created_at?: string
+          created_by: string
+          description: string
+          evidence_path?: string | null
+          expense_date?: string
+          id?: string
+          machine_id?: string | null
+          payment_method?: string
+          reference?: string | null
+          vendor?: string | null
+        }
+        Update: {
+          amount?: number
+          booking_id?: string | null
+          branch_id?: string | null
+          business_id?: string
+          category?: string
+          created_at?: string
+          created_by?: string
+          description?: string
+          evidence_path?: string | null
+          expense_date?: string
+          id?: string
+          machine_id?: string | null
+          payment_method?: string
+          reference?: string | null
+          vendor?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_expenses_booking_id_business_id_fkey"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "business_expenses_branch_id_business_id_fkey"
+            columns: ["branch_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "business_expenses_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_expenses_machine_id_business_id_fkey"
+            columns: ["machine_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "machines"
+            referencedColumns: ["id", "business_id"]
+          },
+        ]
+      }
       businesses: {
         Row: {
           created_at: string
           default_currency: string
           gst_enabled: boolean
+          gst_rate: number
           gstin: string | null
           id: string
+          invoice_prefix: string
+          invoice_terms: string | null
           name: string
           phone: string | null
           service_area: string | null
           updated_at: string
+          upi_id: string | null
+          upi_qr_path: string | null
         }
         Insert: {
           created_at?: string
           default_currency?: string
           gst_enabled?: boolean
+          gst_rate?: number
           gstin?: string | null
           id?: string
+          invoice_prefix?: string
+          invoice_terms?: string | null
           name: string
           phone?: string | null
           service_area?: string | null
           updated_at?: string
+          upi_id?: string | null
+          upi_qr_path?: string | null
         }
         Update: {
           created_at?: string
           default_currency?: string
           gst_enabled?: boolean
+          gst_rate?: number
           gstin?: string | null
           id?: string
+          invoice_prefix?: string
+          invoice_terms?: string | null
           name?: string
           phone?: string | null
           service_area?: string | null
           updated_at?: string
+          upi_id?: string | null
+          upi_qr_path?: string | null
         }
         Relationships: []
       }
@@ -874,6 +972,240 @@ export type Database = {
         }
         Relationships: []
       }
+      rental_invoice_items: {
+        Row: {
+          business_id: string
+          created_at: string
+          description: string
+          id: string
+          invoice_id: string
+          line_total: number
+          quantity: number
+          unit: string
+          unit_price: number
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          description: string
+          id?: string
+          invoice_id: string
+          line_total: number
+          quantity?: number
+          unit?: string
+          unit_price: number
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          invoice_id?: string
+          line_total?: number
+          quantity?: number
+          unit?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_invoice_items_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rental_invoice_items_invoice_id_business_id_fkey"
+            columns: ["invoice_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "rental_invoices"
+            referencedColumns: ["id", "business_id"]
+          },
+        ]
+      }
+      rental_invoices: {
+        Row: {
+          amount_paid: number
+          balance_amount: number
+          billing_address: string
+          booking_id: string
+          branch_id: string | null
+          business_id: string
+          created_at: string
+          created_by: string
+          currency: string
+          customer_mobile: string
+          customer_name: string
+          discount_amount: number
+          due_at: string | null
+          gst_enabled_snapshot: boolean
+          gstin_snapshot: string | null
+          id: string
+          invoice_number: string
+          issued_at: string
+          notes: string | null
+          status: string
+          subtotal: number
+          tax_amount: number
+          tax_rate: number
+          taxable_amount: number
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          amount_paid?: number
+          balance_amount: number
+          billing_address: string
+          booking_id: string
+          branch_id?: string | null
+          business_id: string
+          created_at?: string
+          created_by: string
+          currency?: string
+          customer_mobile: string
+          customer_name: string
+          discount_amount?: number
+          due_at?: string | null
+          gst_enabled_snapshot?: boolean
+          gstin_snapshot?: string | null
+          id?: string
+          invoice_number: string
+          issued_at?: string
+          notes?: string | null
+          status?: string
+          subtotal: number
+          tax_amount?: number
+          tax_rate?: number
+          taxable_amount: number
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          amount_paid?: number
+          balance_amount?: number
+          billing_address?: string
+          booking_id?: string
+          branch_id?: string | null
+          business_id?: string
+          created_at?: string
+          created_by?: string
+          currency?: string
+          customer_mobile?: string
+          customer_name?: string
+          discount_amount?: number
+          due_at?: string | null
+          gst_enabled_snapshot?: boolean
+          gstin_snapshot?: string | null
+          id?: string
+          invoice_number?: string
+          issued_at?: string
+          notes?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          taxable_amount?: number
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_invoices_booking_id_business_id_fkey"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "rental_invoices_branch_id_business_id_fkey"
+            columns: ["branch_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "rental_invoices_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          branch_id: string | null
+          business_id: string
+          id: string
+          invoice_id: string
+          method: string
+          notes: string | null
+          payment_reference: string | null
+          received_at: string
+          received_by: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          branch_id?: string | null
+          business_id: string
+          id?: string
+          invoice_id: string
+          method: string
+          notes?: string | null
+          payment_reference?: string | null
+          received_at?: string
+          received_by: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          branch_id?: string | null
+          business_id?: string
+          id?: string
+          invoice_id?: string
+          method?: string
+          notes?: string | null
+          payment_reference?: string | null
+          received_at?: string
+          received_by?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rental_payments_booking_id_business_id_fkey"
+            columns: ["booking_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "rental_payments_branch_id_business_id_fkey"
+            columns: ["branch_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id", "business_id"]
+          },
+          {
+            foreignKeyName: "rental_payments_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rental_payments_invoice_id_business_id_fkey"
+            columns: ["invoice_id", "business_id"]
+            isOneToOne: false
+            referencedRelation: "rental_invoices"
+            referencedColumns: ["id", "business_id"]
+          },
+        ]
+      }
       staff_login_attempts: {
         Row: {
           attempts: number
@@ -917,6 +1249,20 @@ export type Database = {
         }
         Returns: string
       }
+      create_booking_invoice: {
+        Args: {
+          p_booking_id: string
+          p_diesel_amount?: number
+          p_discount_amount?: number
+          p_notes?: string
+          p_operator_amount?: number
+          p_other_amount?: number
+          p_rental_amount: number
+          p_tax_rate?: number
+          p_transport_amount?: number
+        }
+        Returns: string
+      }
       driver_set_booking_status: {
         Args: {
           p_booking_id: string
@@ -935,6 +1281,16 @@ export type Database = {
           p_speed_mps?: number
         }
         Returns: number
+      }
+      record_invoice_payment: {
+        Args: {
+          p_amount: number
+          p_invoice_id: string
+          p_method: string
+          p_notes?: string
+          p_reference?: string
+        }
+        Returns: string
       }
       start_driver_tracking: {
         Args: { p_assignment_id: string }
