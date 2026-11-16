@@ -1,0 +1,15 @@
+import { useCallback, useEffect, useState } from "react";
+import { supabase } from "./supabase";
+
+type Notice={id:string;event_type:string;title:string;body:string;created_at:string;read_at:string|null;booking_id:string|null};
+export default function NotificationCenter({businessId}:{businessId:string}){
+ const [items,setItems]=useState<Notice[]>([]);
+ const [error,setError]=useState("");
+ const [permission,setPermission]=useState<NotificationPermission>(typeof window!=="undefined"&&"Notification" in window?Notification.permission:"default");
+ const load=useCallback(async()=>{if(!supabase||!businessId)return;const {data,error:e}=await supabase.from("notifications").select("id,event_type,title,body,created_at,read_at,booking_id").eq("business_id",businessId).order("created_at",{ascending:false}).limit(25);if(e){setError(e.message);return;}setItems((data||[]) as Notice[]);},[businessId]);
+ useEffect(()=>{void load();if(!supabase||!businessId)return;const channel=supabase.channel("notifications-"+businessId).on("postgres_changes",{event:"INSERT",schema:"public",table:"notifications",filter:"business_id=eq."+businessId},payload=>{const n=payload.new as Notice;setItems(old=>[n,...old.filter(x=>x.id!==n.id)].slice(0,25));if("Notification" in window&&Notification.permission==="granted")new Notification(n.title,{body:n.body});}).subscribe();return()=>{void supabase?.removeChannel(channel);};},[businessId,load]);
+ async function markRead(id:string){if(!supabase)return;const {error:e}=await supabase.from("notifications").update({read_at:new Date().toISOString()}).eq("id",id);if(e){setError(e.message);return;}setItems(old=>old.map(n=>n.id===id?{...n,read_at:new Date().toISOString()}:n));}
+ async function enable(){if(!("Notification" in window))return;const p=await Notification.requestPermission();setPermission(p);}
+ const unread=items.filter(n=>!n.read_at).length;
+ return <section className="phase8-notifications"><div className="phase8-head"><div><span className="phase8-kicker">ACTIVITY CENTER</span><h3>Notifications {unread>0?<small>{unread} new</small>:null}</h3></div><div className="phase8-tools"><button type="button" onClick={()=>void load()}>Refresh</button>{permission!=="granted"&&"Notification" in window?<button type="button" onClick={()=>void enable()}>Enable browser alerts</button>:null}</div></div>{error?<p role="alert">{error}</p>:null}{items.slice(0,8).map(n=><article key={n.id} className={n.read_at?"":"unread"}><div><b>{n.title}</b><p>{n.body}</p><small>{new Date(n.created_at).toLocaleString("en-IN")}</small></div>{!n.read_at?<button type="button" onClick={()=>void markRead(n.id)}>Mark read</button>:<span className="phase8-read">Read</span>}</article>)}{!items.length?<p className="phase8-empty">No notifications yet. New booking requests and assignment updates will appear here.</p>:null}</section>;
+}
