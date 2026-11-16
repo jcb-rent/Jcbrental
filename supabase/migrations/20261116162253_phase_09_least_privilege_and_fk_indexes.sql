@@ -1,0 +1,17 @@
+revoke all on public.rental_invoices,public.rental_invoice_items,public.rental_payments,public.business_expenses from authenticated;
+grant select,insert on public.rental_invoices to authenticated;grant update(status,notes,due_at) on public.rental_invoices to authenticated;
+grant select,insert on public.rental_invoice_items to authenticated;grant select,insert on public.rental_payments to authenticated;
+grant select,insert,delete on public.business_expenses to authenticated;
+grant update(description,vendor,reference,expense_date,category,amount,payment_method,evidence_path) on public.business_expenses to authenticated;
+create index rental_invoices_booking_business_fk_idx on public.rental_invoices(booking_id,business_id);
+create index rental_invoices_branch_business_fk_idx on public.rental_invoices(branch_id,business_id);
+create index rental_invoices_created_by_fk_idx on public.rental_invoices(created_by);
+create index rental_invoice_items_business_invoice_fk_idx on public.rental_invoice_items(business_id,invoice_id);
+create index rental_payments_booking_business_fk_idx on public.rental_payments(booking_id,business_id);
+create index rental_payments_branch_business_fk_idx on public.rental_payments(branch_id,business_id);
+create index rental_payments_invoice_business_fk_idx on public.rental_payments(invoice_id,business_id);
+create index rental_payments_received_by_fk_idx on public.rental_payments(received_by);
+create index business_expenses_booking_business_fk_idx on public.business_expenses(booking_id,business_id);
+create index business_expenses_branch_business_fk_idx on public.business_expenses(branch_id,business_id);
+create index business_expenses_created_by_fk_idx on public.business_expenses(created_by);
+create index business_expenses_machine_business_fk_idx on public.business_expenses(machine_id,business_id);
