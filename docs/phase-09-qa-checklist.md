@@ -7,7 +7,7 @@
 - [x] GST invoice calculation verified: ₹1,200 subtotal + 18% = ₹1,416 total.
 - [x] Unique invoice number generated for the business.
 - [x] Partial UPI payment updates invoice paid/balance/status and booking payment_status atomically.
-- [x] Overpayment rejected.
+- [x] Overpayment rejected.\n- [x] Payment row cannot be linked to a different booking/branch than its invoice.\n- [x] Anonymous invoice reads, authenticated invoice deletes and payment updates are denied.
 - [x] Expense insert tested under authenticated owner context.
 - [x] Customer tracking API returns invoice/payment fields and UPI ID (HTTP 200).
 - [x] Customer phone, site address and internal business identifiers absent from public tracking response.
