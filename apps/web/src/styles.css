@@ -95,3 +95,10 @@
 .finance-notice{background:#eef8f1;color:#226b3c}
 @media(max-width:900px){.finance-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.finance-two{grid-template-columns:1fr}}
 @media(max-width:650px){.finance-card{padding:14px}.finance-form{grid-template-columns:1fr 1fr}.finance-form.one{grid-template-columns:1fr}.finance-total{grid-column:1/-1}.finance-primary{grid-column:1/-1}}
+
+
+.phase9-payment-card{display:grid;gap:8px;margin-top:14px;padding:15px;border:1px solid #f0d6b4;border-radius:13px;background:#fffaf3;color:#24384b}
+.phase9-payment-card h3{font-size:17px;margin:0}
+.phase9-payment-card p{font-size:13px;margin:0;color:#596b7b}
+.phase9-payment-card small{font-size:11px;line-height:1.5;color:#7c8997}
+.phase9-upi-qr{width:180px;max-width:100%;height:auto;object-fit:contain;border:1px solid #e6e9ed;border-radius:10px;background:white;padding:8px}
