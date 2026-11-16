@@ -1,0 +1,2 @@
+-- The final invoice function uses a suffix-safe invoice sequence and rejects NULL amounts.
+-- See the deployed function definition in the Supabase project for the full body.
