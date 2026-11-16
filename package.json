@@ -1,0 +1,15 @@
+{
+  "name": "jcb-rental-service",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.12.1",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "start:customer": "pnpm --filter @jcb/customer start",
+    "start:operations": "pnpm --filter @jcb/operations start",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  }
+}
