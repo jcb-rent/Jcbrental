@@ -20,7 +20,7 @@ Customer-facing PWA journey using sample data only. This is a demo milestone, no
 - Owner approval, final working-hour caps, overtime, weekly-off/holiday rules, deposits and tax treatment remain authoritative business decisions for production configuration.
 
 ## QA checklist
-- [ ] TypeScript and production build pass in CI.
+- [x] TypeScript check and production build pass in GitHub Actions (run 39).
 - [ ] Customer route and operations route render.
 - [ ] Catalogue search and category filter work.
 - [ ] Hourly, shift, daily, monthly and project booking plans work.
