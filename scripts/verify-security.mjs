@@ -15,6 +15,7 @@ const owner = read("apps/web/src/OwnerPortal.tsx");
 const analytics = read("apps/web/src/AnalyticsPanel.tsx");
 const pin = read("supabase/functions/staff-pin-login/index.ts");
 const publicApi = read("supabase/functions/public-rentals/index.ts");
+const provision = read("supabase/functions/staff-provision/index.ts");
 
 if (!supabase.includes("VITE_SUPABASE_PUBLISHABLE_KEY")) failures.push("Browser client must use the Supabase publishable key.");
 if (/service_role|sb_secret_/i.test(supabase)) failures.push("Privileged Supabase secret detected in browser client source.");
@@ -25,6 +26,11 @@ if (!owner.includes('.eq("business_id",profile.business_id)')) failures.push("Ow
 if (!analytics.includes('.eq("business_id",businessId)')) failures.push("Analytics data queries must be business scoped.");
 if (!pin.includes("staff_login_attempts") || !pin.includes("attempts >= 5") || !pin.includes("sha256(phone)")) failures.push("Staff PIN login must retain hashed identifiers and server-side attempt throttling.");
 if (!publicApi.includes("public_booking_rate_limits")) failures.push("Public booking endpoint must retain server-side rate limiting.");
+if (!provision.includes('owner.role !== "owner"') || !provision.includes("crypto.getRandomValues") || !provision.includes("admin.auth.admin.createUser")) failures.push("Driver provisioning must require an active owner and generate a secure PIN server-side.");
+if (!provision.includes('eq("business_id", owner.business_id)') || !provision.includes('role: "driver"')) failures.push("Driver provisioning must validate tenant branch ownership and assign the driver role.");
+if (!owner.includes('functions.invoke("staff-provision"') || !owner.includes("deactivateDriver")) failures.push("Owner portal must expose secure driver creation and deactivation workflows.");
+if (!app.includes('"/customer"') || !app.includes('"/operations"')) failures.push("Customer and operations apps must have separate direct routes.");
+if (!read("apps/web/vercel.json").includes('"/customer"')) failures.push("Customer route must be rewritten to the SPA entry point.");
 if (/VITE_.*(SERVICE_ROLE|SECRET_KEY)/i.test(read("apps/web/.env.example"))) failures.push("Privileged environment variables must not be exposed as VITE_ variables.");
 
 if (failures.length) {
