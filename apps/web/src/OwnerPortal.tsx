@@ -8,6 +8,7 @@ import AnalyticsPanel from "./AnalyticsPanel";
 type MachineRow = { id:string; fleet_code:string; name:string; category:string; hourly_rate:number; daily_rate:number|null; status:"available"|"on_rent"|"maintenance"|"inactive"; current_location:string|null };
 type BookingRow = { id:string; customer_name:string; customer_mobile:string; site_address:string; starts_at:string; ends_at:string|null; rental_unit:"hour"|"shift"|"day"|"month"|"project"; quantity:number; status:"pending"|"approved"|"rejected"|"assigned"|"in_progress"|"completed"|"cancelled"; quoted_amount:number|null; machine_id:string|null; work_type:string|null };
 type DriverRow = { id:string; full_name:string|null; phone:string|null };
+type BranchRow = { id:string; name:string; address:string|null; phone:string|null; is_primary:boolean };
 const rupee=(n:number)=>"₹"+Number(n||0).toLocaleString("en-IN");
 const title=(s:string)=>s.replaceAll("_"," ").replace(/\b\w/g,c=>c.toUpperCase());
 export default function OwnerPortal(){
@@ -17,6 +18,10 @@ export default function OwnerPortal(){
  const [machines,setMachines]=useState<MachineRow[]>([]);
  const [bookings,setBookings]=useState<BookingRow[]>([]);
  const [drivers,setDrivers]=useState<DriverRow[]>([]);
+ const [branches,setBranches]=useState<BranchRow[]>([]);
+ const [business,setBusiness]=useState({name:"",phone:"",service_area:""});
+ const [businessRole,setBusinessRole]=useState("manager");
+ const [branchForm,setBranchForm]=useState({name:"",address:"",phone:""});
  const [loading,setLoading]=useState(true);
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState("");
@@ -34,8 +39,8 @@ export default function OwnerPortal(){
   if(userError||!user){setError("Your secure session has expired. Sign in again.");setLoading(false);return;}
   const {data:profile,error:profileError}=await supabase.from("profiles").select("business_id,branch_id,role,is_active").eq("id",user.id).single();
   if(profileError||!profile?.business_id||!profile.is_active||!["owner","manager"].includes(profile.role)){setError("Your account is not authorised to manage this business.");setLoading(false);return;}
-  setBusinessId(profile.business_id);setBranchId(profile.branch_id||"");
-  const [m,b,d]=await Promise.all([
+  setBusinessId(profile.business_id);setBranchId(profile.branch_id||"");setBusinessRole(profile.role);
+  const [m,b,d,br,biz]=await Promise.all([
    supabase.from("machines").select("id,fleet_code,name,category,hourly_rate,daily_rate,status,current_location").eq("business_id",profile.business_id).order("created_at",{ascending:false}),
    supabase.from("bookings").select("id,customer_name,customer_mobile,site_address,starts_at,ends_at,rental_unit,quantity,status,quoted_amount,machine_id,work_type").eq("business_id",profile.business_id).order("created_at",{ascending:false}),
    supabase.from("profiles").select("id,full_name,phone").eq("business_id",profile.business_id).eq("role","driver").eq("is_active",true).order("full_name")
@@ -61,6 +66,27 @@ export default function OwnerPortal(){
   if(!supabase)return;const {error:e}=await supabase.from("machines").update({status}).eq("id",id).eq("business_id",businessId);
   if(e){setError(e.message);return;}setNotice("Fleet status saved.");await refresh();
  }
+ async function saveBusiness(e:React.FormEvent){
+  e.preventDefault();if(!supabase||businessRole!=="owner")return;setBusy(true);setError("");
+  const {error:e1}=await supabase.from("businesses").update({name:business.name.trim(),phone:business.phone.trim()||null,service_area:business.service_area.trim()||null}).eq("id",businessId);
+  setBusy(false);if(e1){setError(e1.message);return;}setNotice("Business profile updated.");await refresh();
+ }
+ async function addBranch(e:React.FormEvent){
+  e.preventDefault();if(!supabase||!businessId)return;setBusy(true);setError("");
+  const {error:e1}=await supabase.from("branches").insert({business_id:businessId,name:branchForm.name.trim(),address:branchForm.address.trim()||null,phone:branchForm.phone.trim()||null,is_primary:branches.length===0});
+  setBusy(false);if(e1){setError(e1.message);return;}setBranchForm({name:"",address:"",phone:""});setNotice("Branch created.");await refresh();
+ }
+ async function updateBranch(id:string,patch:Partial<BranchRow>){
+  if(!supabase)return;setBusy(true);setError("");
+  const {error:e1}=await supabase.from("branches").update(patch).eq("id",id).eq("business_id",businessId);
+  setBusy(false);if(e1){setError(e1.message);return;}setNotice("Branch updated.");await refresh();
+ }
+ async function deleteBranch(id:string){
+  if(!supabase||branches.find(b=>b.id===id)?.is_primary)return;
+  if(!window.confirm("Delete this branch? Existing bookings and machine records may prevent deletion."))return;
+  setBusy(true);setError("");const {error:e1}=await supabase.from("branches").delete().eq("id",id).eq("business_id",businessId);
+  setBusy(false);if(e1){setError(e1.message);return;}setNotice("Branch deleted.");await refresh();
+ }
  async function assignBooking(e:React.FormEvent){
   e.preventDefault();if(!supabase||!showAssign||!driverId||!machineId)return;setBusy(true);setError("");
   const {error:e1}=await supabase.rpc("assign_booking",{p_booking_id:showAssign.id,p_machine_id:machineId,p_driver_user_id:driverId});
@@ -78,7 +104,7 @@ export default function OwnerPortal(){
  {!loading&&!error&&section==="Live tracking"&&<LiveFleetTracking businessId={businessId}/>}
  {!loading&&!error&&section==="Finance"&&<FinancePanel businessId={businessId} branchId={branchId}/>}
  {!loading&&!error&&section==="Analytics"&&<AnalyticsPanel businessId={businessId}/>}
- {!loading&&!error&&section==="Business settings"&&<section className="owner-panel settings-panel"><div className="owner-panel-head"><div><span className="eyebrow dark">BUSINESS CONFIGURATION</span><h2>Business settings</h2></div></div><p>Manage your rental business from one place. Financial tax, invoice and UPI controls are available in Finance. Branch records, staff roles and machine inventory remain tenant-scoped and are managed through their respective sections.</p><div className="settings-summary"><div><small>BUSINESS ID</small><b>{businessId}</b></div><div><small>ACTIVE BRANCH</small><b>{branchId||"Primary branch not assigned"}</b></div><div><small>STAFF ACCESS</small><b>Owner / Manager / Driver</b></div></div></section>}
+ {!loading&&!error&&section==="Business settings"&&<><section className="owner-panel settings-panel"><div className="owner-panel-head"><div><span className="eyebrow dark">BUSINESS CONFIGURATION</span><h2>Business profile</h2></div></div><form className="finance-form" onSubmit={saveBusiness}><label>Business name<input required maxLength={120} value={business.name} disabled={businessRole!=="owner"} onChange={e=>setBusiness(p=>({...p,name:e.target.value}))}/></label><label>Business phone<input maxLength={20} value={business.phone} disabled={businessRole!=="owner"} onChange={e=>setBusiness(p=>({...p,phone:e.target.value}))}/></label><label>Service area<input maxLength={160} value={business.service_area} disabled={businessRole!=="owner"} onChange={e=>setBusiness(p=>({...p,service_area:e.target.value}))}/></label>{businessRole==="owner"?<button className="owner-primary" disabled={busy}>Save business profile</button>:<p>Only the business owner can edit core business details.</p>}</form><div className="settings-summary"><div><small>BUSINESS ID</small><b>{businessId}</b></div><div><small>ACTIVE BRANCH</small><b>{branches.find(b=>b.id===branchId)?.name||"Not assigned"}</b></div><div><small>STAFF ACCESS</small><b>Owner / Manager / Driver</b></div></div></section><section className="owner-panel"><div className="owner-panel-head"><div><span className="eyebrow dark">LOCATIONS</span><h2>Branch management</h2></div><span className="owner-count">{branches.length} branches</span></div><form className="finance-form" onSubmit={addBranch}><label>Branch name<input required maxLength={100} value={branchForm.name} onChange={e=>setBranchForm(p=>({...p,name:e.target.value}))} placeholder="e.g. North Yard"/></label><label>Address<input maxLength={240} value={branchForm.address} onChange={e=>setBranchForm(p=>({...p,address:e.target.value}))}/></label><label>Phone<input maxLength={20} value={branchForm.phone} onChange={e=>setBranchForm(p=>({...p,phone:e.target.value}))}/></label><button className="owner-primary" disabled={busy}>Add branch</button></form>{branches.map(b=><article className="driver-row" key={b.id}><div><b>{b.name} {b.is_primary?"· Primary":""}</b><small>{b.address||"Address not set"} · {b.phone||"Phone not set"}</small></div><div className="owner-actions">{!b.is_primary?<button type="button" onClick={()=>void deleteBranch(b.id)} disabled={busy}>Delete</button>:null}</div></article>)}</section></>}
  {notice?<p className="owner-note" role="status">{notice}</p>:null}{busy?<p className="owner-note">Saving…</p>:null}
  </main>
  {showMachine&&<div className="owner-overlay" onClick={()=>setShowMachine(false)}><form className="owner-modal" onClick={e=>e.stopPropagation()} onSubmit={addMachine}><button type="button" className="owner-close" onClick={()=>setShowMachine(false)}>×</button><span className="eyebrow dark">FLEET MANAGEMENT</span><h2>Add a machine</h2><label>Machine name<input required value={machineForm.name} onChange={e=>setMachineForm(p=>({...p,name:e.target.value}))} placeholder="e.g. JCB 3DX"/></label><label>Machine category<select value={machineForm.category} onChange={e=>setMachineForm(p=>({...p,category:e.target.value}))}><option>Backhoe loader</option><option>Breaker</option><option>Loader</option><option>Excavator</option></select></label><label>Hourly rate (₹)<input required type="number" min="0" value={machineForm.hourly_rate} onChange={e=>setMachineForm(p=>({...p,hourly_rate:e.target.value}))}/></label><label>Daily rate (₹)<input type="number" min="0" value={machineForm.daily_rate} onChange={e=>setMachineForm(p=>({...p,daily_rate:e.target.value}))}/></label><label>Current location<input value={machineForm.location} onChange={e=>setMachineForm(p=>({...p,location:e.target.value}))}/></label><button className="owner-primary" disabled={busy}>{busy?"Saving…":"Save machine"}</button></form></div>}
