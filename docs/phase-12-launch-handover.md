@@ -9,7 +9,7 @@
 
 **Release status: BLOCKED — do not announce this application as production-ready.**
 
-The non-deployment engineering work has progressed: GitHub Actions run [#230](https://github.com/jcb-rent/Jcbrental/actions/runs/44060412751) passed dependency installation, TypeScript/Vite production build, PWA smoke checks and security regression checks for commit `6a66a4085b810b8b47c07645b2c2f3a7ddc2df23`. Separate `/operations` and `/customer` routes, owner-only driver provisioning/deactivation, attendance and manual salary recording have been added.
+The non-deployment engineering work has progressed: GitHub Actions run [#243](https://github.com/jcb-rent/Jcbrental/actions/runs/44061084878) passed dependency installation, TypeScript/Vite production build, PWA smoke checks and security regression checks for commit `3fc84ffec7ac0350e871cad92f97207ff5481a23`. Separate `/operations` and `/customer` routes, owner-only driver provisioning/deactivation, attendance and manual salary recording have been added.
 
 Per the current instruction, production deployment and live browser testing are intentionally not being performed in this phase. Vercel status checks previously reported a team build-rate-limit restriction. Do not bypass this by deploying to another project; resume only on the selected `jcbrental-ykel` project when deployment is authorized and available.
 
@@ -67,7 +67,7 @@ Record each result as PASS/FAIL with timestamp, browser/device, deployment commi
 - Supabase Performance Advisor reports 42 unused-index notices. These are not release failures by themselves on an empty/new workload; do not drop indexes without query-plan and workload evidence.
 - GST behavior must be approved by the client's accountant. The current invoice tax model is not a substitute for jurisdiction-specific CGST/SGST/IGST and place-of-supply validation.
 - UPI/Cash payments are manually confirmed and recorded; there is no automatic payment-gateway verification or bank reconciliation.
-- No real driver account is provisioned yet; driver policy testing used simulated authenticated contexts. Provision and test a separate driver before launch.
+- No real driver account is provisioned yet; driver policy testing used simulated authenticated contexts. Provision and test a separate driver before launch.\n- Optional Google sign-in UI is present, but the business must configure Google OAuth client credentials and the allowed `/customer` redirect in Supabase Auth. Guest booking works without Google sign-in.
 - Do not share preview URLs as production links. Vercel SSO protection and custom-domain access must be verified before client handover.
 
 ## Known scope limitations at handover
