@@ -18,7 +18,7 @@ const publicApi = read("supabase/functions/public-rentals/index.ts");
 
 if (!supabase.includes("VITE_SUPABASE_PUBLISHABLE_KEY")) failures.push("Browser client must use the Supabase publishable key.");
 if (/service_role|sb_secret_/i.test(supabase)) failures.push("Privileged Supabase secret detected in browser client source.");
-if (!auth.includes('["owner","manager","driver"]')) failures.push("Operations auth must explicitly allow only staff roles.");
+if (!auth.includes('["owner", "manager", "driver"]')) failures.push("Operations auth must explicitly allow only staff roles.");
 if (!auth.includes("is_active")) failures.push("Operations auth must reject inactive staff profiles.");
 if (!app.includes('auth.profile?.role==="driver"?<DriverPortal/>:<OwnerPortal/>')) failures.push("Driver and owner experiences must remain role-separated.");
 if (!owner.includes('.eq("business_id",profile.business_id)')) failures.push("Owner data loading must be business scoped.");
