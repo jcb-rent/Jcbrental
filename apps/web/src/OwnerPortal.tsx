@@ -21,7 +21,10 @@ export default function OwnerPortal(){
  const [branches,setBranches]=useState<BranchRow[]>([]);
  const [business,setBusiness]=useState({name:"",phone:"",service_area:""});
  const [businessRole,setBusinessRole]=useState("manager");
- const [branchForm,setBranchForm]=useState({name:"",address:"",phone:""});\n const [showDriverForm,setShowDriverForm]=useState(false);\n const [driverForm,setDriverForm]=useState({full_name:"",phone:"",branch_id:""});\n const [newDriver,setNewDriver]=useState<{full_name:string;phone:string;pin:string}|null>(null);
+ const [branchForm,setBranchForm]=useState({name:"",address:"",phone:""});
+ const [showDriverForm,setShowDriverForm]=useState(false);
+ const [driverForm,setDriverForm]=useState({full_name:"",phone:"",branch_id:""});
+ const [newDriver,setNewDriver]=useState<{full_name:string;phone:string;pin:string}|null>(null);
  const [loading,setLoading]=useState(true);
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState("");
