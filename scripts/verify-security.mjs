@@ -16,6 +16,7 @@ const analytics = read("apps/web/src/AnalyticsPanel.tsx");
 const pin = read("supabase/functions/staff-pin-login/index.ts");
 const publicApi = read("supabase/functions/public-rentals/index.ts");
 const provision = read("supabase/functions/staff-provision/index.ts");
+const customer = read("apps/web/src/CustomerPortal.tsx");
 
 if (!supabase.includes("VITE_SUPABASE_PUBLISHABLE_KEY")) failures.push("Browser client must use the Supabase publishable key.");
 if (/service_role|sb_secret_/i.test(supabase)) failures.push("Privileged Supabase secret detected in browser client source.");
@@ -33,6 +34,7 @@ if (!provision.includes('payload.action === "deactivate"') || !provision.include
 if (!owner.includes('category:"driver_salary"') || !owner.includes('from("driver_attendance")')) failures.push("Owner portal must retain driver attendance and salary-expense workflows.");
 if (!app.includes('"/customer"') || !app.includes('"/operations"')) failures.push("Customer and operations apps must have separate direct routes.");
 if (!read("apps/web/vercel.json").includes('"/customer"')) failures.push("Customer route must be rewritten to the SPA entry point.");
+if (!customer.includes('signInWithOAuth({provider:"google"') || !customer.includes("Guest booking")) failures.push("Customer portal must retain optional Google sign-in and guest booking.");
 if (/VITE_.*(SERVICE_ROLE|SECRET_KEY)/i.test(read("apps/web/.env.example"))) failures.push("Privileged environment variables must not be exposed as VITE_ variables.");
 
 if (failures.length) {
