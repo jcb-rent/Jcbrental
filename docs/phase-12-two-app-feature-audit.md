@@ -49,8 +49,8 @@ Vercel SPA rewrites are configured for both paths. The apps share the backend, b
 - `pnpm-workspace.yaml` explicitly allows the esbuild build script required by the Vite toolchain.
 - Both direct routes are covered by Vercel rewrite configuration.
 - All 17 public tables were previously re-audited with RLS enabled; no anonymous direct table grants were found.
-- `staff-provision` is deployed as an ACTIVE Edge Function with JWT verification enabled. It checks the authenticated caller's active owner role and business scope before creating/deactivating driver profiles.
-- Latest source changes after run #212 (customer hero, driver account UI, attendance/salary panels and expanded regression assertions) require their own green CI run before engineering sign-off.
+- `staff-provision` is deployed as an ACTIVE Edge Function (version 3) with JWT verification enabled. It checks the authenticated caller's active owner role and business scope before creating/deactivating driver profiles. Deactivated profiles are excluded by the shared active-profile authorization helpers.
+- Latest source commit `6a66a4085b810b8b47c07645b2c2f3a7ddc2df23` passed GitHub Actions run [#230](https://github.com/jcb-rent/Jcbrental/actions/runs/44060412751): dependency installation, TypeScript + Vite production build, PWA smoke checks and expanded security regression checks all succeeded.
 
 ## Remaining work and honest limitations
 
