@@ -17,12 +17,12 @@ The Vercel team also returned a build-rate-limit failure for the project's deplo
 
 | Gate | Required evidence | Current state |
 |---|---|---|
-| Phase 11 CI | Successful workflow run including typecheck/build, PWA smoke test and security regression test | Pending verification |
+| Phase 11 CI | Successful workflow run including typecheck/build, PWA smoke test and security regression test | PASS — run #230 |
 | Production build | Vercel READY deployment for the latest `main` commit | Blocked: dependency fetch failure / deployment quota |
 | Production browser smoke test | Browser checks against the READY deployment | Not run; no current READY deployment |
-| Customer flow | Machine list, valid booking, validation errors, tracking link and privacy boundary | Backend/API tests only; production UI unverified |
-| Owner flow | PIN/login, business dashboard, machine CRUD, booking review/assignment, finance and analytics | Production UI unverified |
-| Driver flow | Driver authentication, own-job visibility, start/complete work, GPS consent and location boundary | Simulated DB policy tests only; no separate real driver account |
+| Customer flow | Machine list, valid booking, validation errors, tracking link and privacy boundary | Backend/API tests recorded; current UI build passes; live browser test pending |
+| Owner flow | PIN/login, business dashboard, machine management, booking review/assignment, finance, analytics, business profile, branches and driver provisioning | Current UI/build implemented; authenticated browser/RLS verification pending |
+| Driver flow | Driver authentication, own-job visibility, start/complete work, attendance, logbook, salary recording, GPS consent and location boundary | Workflow implemented; simulated policy tests recorded; separate real driver account test pending |
 | PWA | Installability, manifest, service worker, offline shell and update behavior on Android Chrome | Build artifact not verified on current commit |
 | Supabase security | RLS/tenant isolation, no anonymous private data, leaked-password protection | RLS checks recorded; leaked-password protection warning remains |
 | Business configuration | Correct machines, rates, rental rules, GST treatment, UPI details, contact and branch settings | Business exists; inventory and payment settings require owner confirmation |
@@ -72,8 +72,8 @@ Record each result as PASS/FAIL with timestamp, browser/device, deployment commi
 
 ## Known scope limitations at handover
 
-- Refunds, credit notes, automated payroll, accounting exports and automated bank reconciliation are not implemented.
-- Business profile/branch CRUD and complete staff provisioning workflows are not yet evidenced as production-ready.
+- Refunds, credit notes, automated payroll, accounting exports and automated bank reconciliation are not implemented. Driver attendance and manual salary-expense recording are implemented.
+- Business profile/branch CRUD and owner-only driver account provisioning are implemented in the current source; authenticated browser/RLS validation and a real driver lifecycle test remain outstanding.
 - Analytics uses capped recent records and some metrics are based on invoice issue date/current fleet snapshot rather than a complete accounting ledger or historical utilization.
 - Offline booking/payment confirmation is not supported; these operations require connectivity.
 
