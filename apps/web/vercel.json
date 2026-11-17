@@ -1,1 +1,6 @@
-{"rewrites":[{"source":"/operations","destination":"/"}]}
+{
+  "rewrites": [
+    { "source": "/operations", "destination": "/" },
+    { "source": "/customer", "destination": "/" }
+  ]
+}
