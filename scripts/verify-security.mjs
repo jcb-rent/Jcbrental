@@ -23,7 +23,7 @@ if (!auth.includes("is_active")) failures.push("Operations auth must reject inac
 if (!app.includes('auth.profile?.role==="driver"?<DriverPortal/>:<OwnerPortal/>')) failures.push("Driver and owner experiences must remain role-separated.");
 if (!owner.includes('.eq("business_id",profile.business_id)')) failures.push("Owner data loading must be business scoped.");
 if (!analytics.includes('.eq("business_id",businessId)')) failures.push("Analytics data queries must be business scoped.");
-if (!pin.includes("staff_login_attempts") || !pin.includes("verify_jwt")) failures.push("Staff PIN login must retain server-side throttling/verification controls.");
+if (!pin.includes("staff_login_attempts") || !pin.includes("attempts >= 5") || !pin.includes("sha256(phone)")) failures.push("Staff PIN login must retain hashed identifiers and server-side attempt throttling.");
 if (!publicApi.includes("public_booking_rate_limits")) failures.push("Public booking endpoint must retain server-side rate limiting.");
 if (/VITE_.*(SERVICE_ROLE|SECRET_KEY)/i.test(read("apps/web/.env.example"))) failures.push("Privileged environment variables must not be exposed as VITE_ variables.");
 
