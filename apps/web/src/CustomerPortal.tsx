@@ -13,7 +13,10 @@ export default function CustomerPortal(){
  const [success,setSuccess]=useState<{id:string;status:string;tracking_token:string}|null>(null);
  const [trackingToken,setTrackingToken]=useState(()=>new URLSearchParams(window.location.search).get("track")||"");
  const [tracking,setTracking]=useState<any>(null);
- const [trackingError,setTrackingError]=useState("");\n const [customerUser,setCustomerUser]=useState<any>(null);\n const [authMessage,setAuthMessage]=useState("");\n const [authBusy,setAuthBusy]=useState(false);
+ const [trackingError,setTrackingError]=useState("");
+ const [customerUser,setCustomerUser]=useState<any>(null);
+ const [authMessage,setAuthMessage]=useState("");
+ const [authBusy,setAuthBusy]=useState(false);
  const [form,setForm]=useState({customer_name:"",customer_mobile:"",site_address:"",site_landmark:"",work_type:"Excavation",rental_unit:"hour",quantity:"4",starts_at:"",diesel_included:false,operator_included:true,transport_required:false,notes:""});
  useEffect(()=>{if(!supabase)return;let active=true;void supabase.auth.getSession().then(({data})=>{if(active){setCustomerUser(data.session?.user||null);const name=data.session?.user?.user_metadata?.full_name||data.session?.user?.user_metadata?.name;if(name)setForm(p=>({...p,customer_name:p.customer_name||name}));}});const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{if(!active)return;setCustomerUser(session?.user||null);const name=session?.user?.user_metadata?.full_name||session?.user?.user_metadata?.name;if(name)setForm(p=>({...p,customer_name:p.customer_name||name}));});return()=>{active=false;subscription.unsubscribe();};},[]);
  async function googleSignIn(){if(!supabase)return;setAuthBusy(true);setAuthMessage("");const {error:e}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.origin+"/customer"}});setAuthBusy(false);if(e)setAuthMessage("Google sign-in is unavailable: "+e.message);}
