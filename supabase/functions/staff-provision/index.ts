@@ -53,7 +53,7 @@ Deno.serve(async (req: Request) => {
   const fullName = typeof payload.full_name === "string" ? payload.full_name.trim() : "";
   const phone = typeof payload.phone === "string" ? payload.phone.replace(/\D/g, "").slice(-10) : "";
   const branchId = typeof payload.branch_id === "string" && payload.branch_id ? payload.branch_id : null;
-  if (fullName.length < 2 || fullName.length > 100 || !/^\d{10}$/.test(phone)) {
+  if (payload.action !== "deactivate" && (fullName.length < 2 || fullName.length > 100 || !/^\d{10}$/.test(phone))) {
     return respond({ error: "Enter a valid driver name and 10-digit mobile number" }, 400, origin);
   }
 
