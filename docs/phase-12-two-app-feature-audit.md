@@ -27,7 +27,7 @@ Vercel SPA rewrites are configured for both paths. The apps share the backend, b
 | Area | Current implementation |
 |---|---|
 | Customer catalogue | Live available-machine catalogue, search and empty/error/loading states |
-| Guest booking | Name, mobile, site address, work type, rental unit/quantity, schedule and operating preferences |
+| Guest booking | Name, mobile, site address, work type, rental unit/quantity, schedule and operating preferences |\n| Customer sign-in | Optional Google OAuth button; guest booking remains available without login |
 | Customer tracking | Secure token link, booking status, assigned machine, latest shared location, invoice balance and UPI details |
 | Owner overview | Fleet KPIs, pending approvals, quick actions and live business data |
 | Booking workflow | Approve/reject, assign available machine + active driver through atomic RPC |
