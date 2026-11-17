@@ -103,8 +103,8 @@ export default function OwnerPortal(){
  async function deactivateDriver(id:string){
   if(!supabase||businessRole!=="owner")return;
   if(!window.confirm("Deactivate this driver? They will no longer be able to sign in or access assigned work."))return;
-  setBusy(true);setError("");const {error:e1}=await supabase.from("profiles").update({is_active:false}).eq("id",id).eq("business_id",businessId).eq("role","driver");
-  setBusy(false);if(e1){setError(e1.message);return;}setNotice("Driver access deactivated.");await refresh();
+  setBusy(true);setError("");const {data,error:e1}=await supabase.functions.invoke("staff-provision",{body:{action:"deactivate",driver_user_id:id}});
+  setBusy(false);if(e1||!data?.success){setError(data?.error||e1?.message||"Driver access could not be deactivated.");return;}setNotice("Driver access deactivated.");await refresh();
  }
  async function assignBooking(e:React.FormEvent){
   e.preventDefault();if(!supabase||!showAssign||!driverId||!machineId)return;setBusy(true);setError("");
