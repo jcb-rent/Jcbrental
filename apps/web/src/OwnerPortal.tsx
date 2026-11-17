@@ -8,7 +8,8 @@ import AnalyticsPanel from "./AnalyticsPanel";
 type MachineRow = { id:string; fleet_code:string; name:string; category:string; hourly_rate:number; daily_rate:number|null; status:"available"|"on_rent"|"maintenance"|"inactive"; current_location:string|null };
 type BookingRow = { id:string; customer_name:string; customer_mobile:string; site_address:string; starts_at:string; ends_at:string|null; rental_unit:"hour"|"shift"|"day"|"month"|"project"; quantity:number; status:"pending"|"approved"|"rejected"|"assigned"|"in_progress"|"completed"|"cancelled"; quoted_amount:number|null; machine_id:string|null; work_type:string|null };
 type DriverRow = { id:string; full_name:string|null; phone:string|null };
-type BranchRow = { id:string; name:string; address:string|null; phone:string|null; is_primary:boolean };\ntype AttendanceRow = { id:string; driver_user_id:string; check_in_at:string; check_out_at:string|null };
+type BranchRow = { id:string; name:string; address:string|null; phone:string|null; is_primary:boolean };
+type AttendanceRow = { id:string; driver_user_id:string; check_in_at:string; check_out_at:string|null };
 const rupee=(n:number)=>"₹"+Number(n||0).toLocaleString("en-IN");
 const title=(s:string)=>s.replaceAll("_"," ").replace(/\b\w/g,c=>c.toUpperCase());
 export default function OwnerPortal(){
@@ -24,7 +25,9 @@ export default function OwnerPortal(){
  const [branchForm,setBranchForm]=useState({name:"",address:"",phone:""});
  const [showDriverForm,setShowDriverForm]=useState(false);
  const [driverForm,setDriverForm]=useState({full_name:"",phone:"",branch_id:""});
- const [newDriver,setNewDriver]=useState<{full_name:string;phone:string;pin:string}|null>(null);\n const [attendanceRows,setAttendanceRows]=useState<AttendanceRow[]>([]);\n const [salaryForm,setSalaryForm]=useState({driver_id:"",amount:"",expense_date:new Date().toISOString().slice(0,10),payment_method:"cash",reference:"",description:"Monthly driver salary"});
+ const [newDriver,setNewDriver]=useState<{full_name:string;phone:string;pin:string}|null>(null);
+ const [attendanceRows,setAttendanceRows]=useState<AttendanceRow[]>([]);
+ const [salaryForm,setSalaryForm]=useState({driver_id:"",amount:"",expense_date:new Date().toISOString().slice(0,10),payment_method:"cash",reference:"",description:"Monthly driver salary"});
  const [loading,setLoading]=useState(true);
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState("");
