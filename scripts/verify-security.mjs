@@ -34,7 +34,7 @@ if (!provision.includes('payload.action === "deactivate"') || !provision.include
 if (!owner.includes('category:"driver_salary"') || !owner.includes('from("driver_attendance")')) failures.push("Owner portal must retain driver attendance and salary-expense workflows.");
 if (!app.includes('"/customer"') || !app.includes('"/operations"')) failures.push("Customer and operations apps must have separate direct routes.");
 if (!read("apps/web/vercel.json").includes('"/customer"')) failures.push("Customer route must be rewritten to the SPA entry point.");
-if (!customer.includes('signInWithOAuth({provider:"google"') || !customer.includes("Guest booking")) failures.push("Customer portal must retain optional Google sign-in and guest booking.");
+if (!customer.includes('signInWithOAuth({provider:"google"') || !customer.includes("book as a guest")) failures.push("Customer portal must retain optional Google sign-in and guest booking.");
 if (/VITE_.*(SERVICE_ROLE|SECRET_KEY)/i.test(read("apps/web/.env.example"))) failures.push("Privileged environment variables must not be exposed as VITE_ variables.");
 
 if (failures.length) {
