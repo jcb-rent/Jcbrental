@@ -22,3 +22,5 @@ jobs:
         run: pnpm build
       - name: Verify PWA integration outputs
         run: node scripts/verify-pwa.mjs
+      - name: Verify security regression controls
+        run: node scripts/verify-security.mjs
