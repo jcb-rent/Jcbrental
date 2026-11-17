@@ -42,7 +42,7 @@ Vercel SPA rewrites are configured for both paths. The apps share the backend, b
 | Business settings | Owner-editable business profile and branch create/edit/delete (primary branch protected) |
 | PWA | Manifest, service worker, offline app shell and auto-update configuration |
 
-## Engineering verification
+## Customer authentication note\n\nOptional Google sign-in UI is implemented and guest booking remains available without login. The Supabase Google provider still requires the client's Google OAuth client ID/secret and the production redirect URL to be configured in Supabase Auth before the button can complete OAuth sign-in.\n\n## Engineering verification
 
 - GitHub Actions run [#212](https://github.com/jcb-rent/Jcbrental/actions/runs/44059482909) passed dependency installation, TypeScript + Vite production build, PWA artifact smoke checks and the security regression script for the route/navigation baseline.
 - pnpm 12.21.0 is used consistently in GitHub Actions and the root package manager declaration.
