@@ -29,6 +29,8 @@ if (!publicApi.includes("public_booking_rate_limits")) failures.push("Public boo
 if (!provision.includes('owner.role !== "owner"') || !provision.includes("crypto.getRandomValues") || !provision.includes("admin.auth.admin.createUser")) failures.push("Driver provisioning must require an active owner and generate a secure PIN server-side.");
 if (!provision.includes('eq("business_id", owner.business_id)') || !provision.includes('role: "driver"')) failures.push("Driver provisioning must validate tenant branch ownership and assign the driver role.");
 if (!owner.includes('functions.invoke("staff-provision"') || !owner.includes("deactivateDriver")) failures.push("Owner portal must expose secure driver creation and deactivation workflows.");
+if (!provision.includes('payload.action === "deactivate"') || !provision.includes('role", "driver"')) failures.push("Driver deactivation must be owner-only and restricted to the same tenant.");
+if (!owner.includes('category:"driver_salary"') || !owner.includes('from("driver_attendance")')) failures.push("Owner portal must retain driver attendance and salary-expense workflows.");
 if (!app.includes('"/customer"') || !app.includes('"/operations"')) failures.push("Customer and operations apps must have separate direct routes.");
 if (!read("apps/web/vercel.json").includes('"/customer"')) failures.push("Customer route must be rewritten to the SPA entry point.");
 if (/VITE_.*(SERVICE_ROLE|SECRET_KEY)/i.test(read("apps/web/.env.example"))) failures.push("Privileged environment variables must not be exposed as VITE_ variables.");
