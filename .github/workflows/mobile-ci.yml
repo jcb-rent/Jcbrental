@@ -15,7 +15,7 @@ jobs:
           version: 12.21.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.13.0
+          node-version: 24.x
       - name: Install workspace dependencies
         run: pnpm install --no-frozen-lockfile
       - name: TypeScript check and production build
