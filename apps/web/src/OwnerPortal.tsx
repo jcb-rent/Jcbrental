@@ -91,7 +91,7 @@ export default function OwnerPortal(){
  }
  async function createDriver(e:React.FormEvent){
   e.preventDefault();if(!supabase||businessRole!=="owner")return;setBusy(true);setError("");setNotice("");
-  const {data,error:e1}=await supabase.functions.invoke("staff-provision",{body:{full_name:driverForm.full_name.trim(),phone:driverForm.phone.replace(/\\D/g,"").slice(-10),branch_id:driverForm.branch_id||null}});
+  const {data,error:e1}=await supabase.functions.invoke("staff-provision",{body:{full_name:driverForm.full_name.trim(),phone:driverForm.phone.replace(/\D/g,"").slice(-10),branch_id:driverForm.branch_id||null}});
   setBusy(false);
   if(e1||!data?.driver||!data?.pin){setError(data?.error||e1?.message||"Driver account could not be created.");return;}
   setNewDriver({full_name:data.driver.full_name,phone:data.driver.phone,pin:data.pin});
