@@ -48,7 +48,7 @@ Deno.serve(async (req: Request) => {
   const { data: callerData, error: callerError } = await caller.auth.getUser(token);
   if (callerError || !callerData.user) return respond({ error: "Sign in again to continue" }, 401, origin);
 
-  let payload: { full_name?: unknown; phone?: unknown; branch_id?: unknown };
+  let payload: { action?: unknown; driver_user_id?: unknown; full_name?: unknown; phone?: unknown; branch_id?: unknown };
   try { payload = await req.json(); } catch { return respond({ error: "Invalid request" }, 400, origin); }
   const fullName = typeof payload.full_name === "string" ? payload.full_name.trim() : "";
   const phone = typeof payload.phone === "string" ? payload.phone.replace(/\D/g, "").slice(-10) : "";
@@ -63,6 +63,19 @@ Deno.serve(async (req: Request) => {
   if (ownerError || !owner?.is_active || owner.role !== "owner" || !owner.business_id) {
     return respond({ error: "Only the active business owner can create driver accounts" }, 403, origin);
   }
+  if (payload.action === "deactivate") {
+    const driverId = typeof payload.driver_user_id === "string" ? payload.driver_user_id : "";
+    if (!/^[0-9a-f-]{36}$/i.test(driverId)) return respond({ error: "Invalid driver account" }, 400, origin);
+    const { data: driver } = await admin.from("profiles").select("id").eq("id", driverId)
+      .eq("business_id", owner.business_id).eq("role", "driver").maybeSingle();
+    if (!driver) return respond({ error: "Driver account was not found in your business" }, 404, origin);
+    const { error: deactivateError } = await admin.from("profiles").update({ is_active: false })
+      .eq("id", driverId).eq("business_id", owner.business_id);
+    if (deactivateError) return respond({ error: "Driver access could not be deactivated" }, 500, origin);
+    return respond({ success: true, driver_id: driverId, is_active: false }, 200, origin);
+  }
+
+  if (payload.action && payload.action !== "create") return respond({ error: "Unsupported action" }, 400, origin);
   if (branchId) {
     const { data: branch } = await admin.from("branches").select("id").eq("id", branchId).eq("business_id", owner.business_id).maybeSingle();
     if (!branch) return respond({ error: "Selected branch does not belong to your business" }, 400, origin);
