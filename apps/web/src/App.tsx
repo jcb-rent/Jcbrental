@@ -41,7 +41,9 @@ export default function App() {
    </div>
   </header>
   <main className="app-content">
-   {view==="customer"?<CustomerPortal/>:auth.loading?<section className="auth-loading glass-loading"><span className="loading-orbit"/>Checking secure session…</section>:!isStaff?<><OperationsLogin/>{auth.error&&<div className="auth-error auth-global" role="alert">{auth.error}</div>}</>:auth.profile?.role==="driver"?<DriverPortal/>:<OwnerPortal/>}
+   <Suspense fallback={<section className="auth-loading glass-loading"><span className="loading-orbit"/>Loading your workspace…</section>}>
+    {view==="customer"?<CustomerPortal/>:auth.loading?<section className="auth-loading glass-loading"><span className="loading-orbit"/>Checking secure session…</section>:!isStaff?<><OperationsLogin/>{auth.error&&<div className="auth-error auth-global" role="alert">{auth.error}</div>}</>:auth.profile?.role==="driver"?<DriverPortal/>:<OwnerPortal/>}
+   </Suspense>
   </main>
   <nav className="mobile-app-dock" aria-label="Switch apps">
    <button className={view==="operations"?"dock-active":""} onClick={()=>go("operations")}><span>▦</span><small>Owner & Driver</small></button>
