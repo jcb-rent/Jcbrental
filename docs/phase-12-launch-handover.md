@@ -67,7 +67,8 @@ Record each result as PASS/FAIL with timestamp, browser/device, deployment commi
 - Supabase Performance Advisor reports 42 unused-index notices. These are not release failures by themselves on an empty/new workload; do not drop indexes without query-plan and workload evidence.
 - GST behavior must be approved by the client's accountant. The current invoice tax model is not a substitute for jurisdiction-specific CGST/SGST/IGST and place-of-supply validation.
 - UPI/Cash payments are manually confirmed and recorded; there is no automatic payment-gateway verification or bank reconciliation.
-- No real driver account is provisioned yet; driver policy testing used simulated authenticated contexts. Provision and test a separate driver before launch.\n- Optional Google sign-in UI is present, but the business must configure Google OAuth client credentials and the allowed `/customer` redirect in Supabase Auth. Guest booking works without Google sign-in.
+- No real driver account is provisioned yet; driver policy testing used simulated authenticated contexts. Provision and test a separate driver before launch.
+- Optional Google sign-in UI is present, but the business must configure Google OAuth client credentials and the allowed `/customer` redirect in Supabase Auth. Guest booking works without Google sign-in.
 - Do not share preview URLs as production links. Vercel SSO protection and custom-domain access must be verified before client handover.
 
 ## Known scope limitations at handover
