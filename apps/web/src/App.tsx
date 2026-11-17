@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import CustomerPortal from "./CustomerPortal";
-import OwnerPortal from "./OwnerPortal";
-import DriverPortal from "./DriverPortal";
+import { lazy, Suspense, useEffect, useState } from "react";
+const CustomerPortal = lazy(() => import("./CustomerPortal"));
+const OwnerPortal = lazy(() => import("./OwnerPortal"));
+const DriverPortal = lazy(() => import("./DriverPortal"));
 import OperationsLogin, { useOperationsAuth } from "./OperationsAuth";
 
 type View = "customer" | "operations";
