@@ -9,9 +9,9 @@
 
 **Release status: BLOCKED — do not announce this application as production-ready.**
 
-Phase 12 handover preparation is documented, but production launch is not signed off. The latest deployment for commit `4e09379bc270e2140fe09cdbbc2269bcf7c09f60` failed during dependency installation with `ERR_PNPM_META_FETCH_FAIL`. The build did not reach TypeScript compilation or Vite bundling, so this failure does not establish whether application compilation passes.
+The non-deployment engineering work has progressed: GitHub Actions run [#230](https://github.com/jcb-rent/Jcbrental/actions/runs/44060412751) passed dependency installation, TypeScript/Vite production build, PWA smoke checks and security regression checks for commit `6a66a4085b810b8b47c07645b2c2f3a7ddc2df23`. Separate `/operations` and `/customer` routes, owner-only driver provisioning/deactivation, attendance and manual salary recording have been added.
 
-The Vercel team also returned a build-rate-limit failure for the project's deployment status checks. Do not bypass the limit by deploying to a different Vercel project. Resume on the selected `jcbrental-ykel` project when the team's deployment quota permits.
+Per the current instruction, production deployment and live browser testing are intentionally not being performed in this phase. Vercel status checks previously reported a team build-rate-limit restriction. Do not bypass this by deploying to another project; resume only on the selected `jcbrental-ykel` project when deployment is authorized and available.
 
 ## Phase 12 launch gates
 
@@ -72,7 +72,7 @@ Record each result as PASS/FAIL with timestamp, browser/device, deployment commi
 
 ## Known scope limitations at handover
 
-- Refunds, credit notes, automated payroll, accounting exports and automated bank reconciliation are not implemented. Driver attendance and manual salary-expense recording are implemented.
+- Refunds, credit notes, automated payroll, accounting exports and automated bank reconciliation are not implemented. Driver attendance and manual salary-expense recording are implemented. Driver attendance and manual salary-expense recording are implemented.
 - Business profile/branch CRUD and owner-only driver account provisioning are implemented in the current source; authenticated browser/RLS validation and a real driver lifecycle test remain outstanding.
 - Analytics uses capped recent records and some metrics are based on invoice issue date/current fleet snapshot rather than a complete accounting ledger or historical utilization.
 - Offline booking/payment confirmation is not supported; these operations require connectivity.
