@@ -51,7 +51,8 @@ export default function OwnerPortal(){
    supabase.from("bookings").select("id,customer_name,customer_mobile,site_address,starts_at,ends_at,rental_unit,quantity,status,quoted_amount,machine_id,work_type").eq("business_id",profile.business_id).order("created_at",{ascending:false}),
    supabase.from("profiles").select("id,full_name,phone").eq("business_id",profile.business_id).eq("role","driver").eq("is_active",true).order("full_name"),
    supabase.from("branches").select("id,name,address,phone,is_primary").eq("business_id",profile.business_id).order("is_primary",{ascending:false}).order("name"),
-   supabase.from("businesses").select("name,phone,service_area").eq("id",profile.business_id).single()
+   supabase.from("businesses").select("name,phone,service_area").eq("id",profile.business_id).single(),
+   supabase.from("driver_attendance").select("id,driver_user_id,check_in_at,check_out_at").eq("business_id",profile.business_id).order("check_in_at",{ascending:false}).limit(100)
   ]);
   if(m.error||b.error||d.error||br.error||biz.error||att.error){setError(m.error?.message||b.error?.message||d.error?.message||br.error?.message||biz.error?.message||att.error?.message||"Unable to load business data.");}
   setMachines((m.data||[]) as MachineRow[]);setBookings((b.data||[]) as BookingRow[]);setDrivers((d.data||[]) as DriverRow[]);setBranches((br.data||[]) as BranchRow[]);setAttendanceRows((att.data||[]) as AttendanceRow[]);setBusiness({name:biz.data?.name||"",phone:biz.data?.phone||"",service_area:biz.data?.service_area||""});
