@@ -43,10 +43,12 @@ export default function OwnerPortal(){
   const [m,b,d,br,biz]=await Promise.all([
    supabase.from("machines").select("id,fleet_code,name,category,hourly_rate,daily_rate,status,current_location").eq("business_id",profile.business_id).order("created_at",{ascending:false}),
    supabase.from("bookings").select("id,customer_name,customer_mobile,site_address,starts_at,ends_at,rental_unit,quantity,status,quoted_amount,machine_id,work_type").eq("business_id",profile.business_id).order("created_at",{ascending:false}),
-   supabase.from("profiles").select("id,full_name,phone").eq("business_id",profile.business_id).eq("role","driver").eq("is_active",true).order("full_name")
+   supabase.from("profiles").select("id,full_name,phone").eq("business_id",profile.business_id).eq("role","driver").eq("is_active",true).order("full_name"),
+   supabase.from("branches").select("id,name,address,phone,is_primary").eq("business_id",profile.business_id).order("is_primary",{ascending:false}).order("name"),
+   supabase.from("businesses").select("name,phone,service_area").eq("id",profile.business_id).single()
   ]);
-  if(m.error||b.error||d.error){setError(m.error?.message||b.error?.message||d.error?.message||"Unable to load business data.");}
-  setMachines((m.data||[]) as MachineRow[]);setBookings((b.data||[]) as BookingRow[]);setDrivers((d.data||[]) as DriverRow[]);
+  if(m.error||b.error||d.error||br.error||biz.error){setError(m.error?.message||b.error?.message||d.error?.message||br.error?.message||biz.error?.message||"Unable to load business data.");}
+  setMachines((m.data||[]) as MachineRow[]);setBookings((b.data||[]) as BookingRow[]);setDrivers((d.data||[]) as DriverRow[]);setBranches((br.data||[]) as BranchRow[]);setBusiness({name:biz.data?.name||"",phone:biz.data?.phone||"",service_area:biz.data?.service_area||""});
   setLoading(false);
  },[]);
  useEffect(()=>{void refresh();},[refresh]);
